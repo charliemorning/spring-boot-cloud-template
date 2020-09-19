@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!--  spring-boot-cloud-template by zhangchen  -->
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.charlie</groupId>
+    <artifactId>spring-boot-cloud-template</artifactId>
+    <packaging>pom</packaging>
+    <version>0.1.0</version>
+    <modules>
+        <module>../spring-boot-cloud-template-dao</module>
+        <module>../spring-boot-cloud-template-service</module>
+        <module>../spring-boot-cloud-template-controller</module>
+        <module>../spring-boot-cloud-template-global</module>
+    </modules>
+
+    <properties>
+        <springboot.version>2.2.6.RELEASE</springboot.version>
+        <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
+        <springcloud.version>2.2.2.RELEASE</springcloud.version>
+        <spring.version>5.2.5.RELEASE</spring.version>
+        <srping-kafka.version>2.4.8.RELEASE</srping-kafka.version>
+        <spring-data-hadoop.version>2.5.0.RELEASE</spring-data-hadoop.version>
+        <jackson.version>2.11.0</jackson.version>
+        <guava.version>23.0</guava.version>
+        <druid.version>1.1.22</druid.version>
+        <httpclient.version>4.5.12</httpclient.version>
+        <httpasyncclient.version>4.1.4</httpasyncclient.version>
+        <mysql-conn-java.version>8.0.21</mysql-conn-java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <docker.image.prefix>springboot</docker.image.prefix>
+    </properties>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.6.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.10</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-beans -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+        <!--<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.2.6.RELEASE</version>
+        </dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
+        <!--<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>5.2.6.RELEASE</version>
+        </dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+            <version>${springboot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+            <version>${springboot.version}</version>
+        </dependency>
+
+
+    </dependencies>
+
+</project>

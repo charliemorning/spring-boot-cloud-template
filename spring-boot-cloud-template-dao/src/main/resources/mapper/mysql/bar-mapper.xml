@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.charlie.template.dao.BarDAO">
+
+    <resultMap id="barMap" type="org.charlie.template.po.BarPO">
+        <result column="BAR_INT" jdbcType="INTEGER" property="barInt" />
+        <result column="FOO_INT" jdbcType="INTEGER" property="fooInt" />
+    </resultMap>
+
+    <select id="selectBars" parameterMap="barMap" resultType="java.util.List">
+        SELECT * FROM BAR
+    </select>
+
+    <insert id="insertBar" parameterMap="barMap">
+        INSERT INTO BAR (
+            FOO_INT
+        ) VALUES (
+            #{fooInt,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <update id="updatBar" parameterMap="barMap">
+        UPDATE BAR
+        SET
+
+    </update>
+
+    <delete id="deleteBar" parameterMap="barMap">
+        DELETE FROM BAR
+    </delete>
+</mapper>

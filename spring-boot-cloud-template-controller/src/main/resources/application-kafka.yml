@@ -1,0 +1,11 @@
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: 127.0.0.1:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      enable-auto-commit: true
+      group-id: applog
+      auto-offset-reset: latest
+      bootstrap-servers: 127.0.0.1:9092
