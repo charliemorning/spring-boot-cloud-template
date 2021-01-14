@@ -25,7 +25,7 @@ spring:
     druid:
       url: jdbc:mysql://127.0.0.1:3306/foo
       username: root
-      password: root
+      password: 123123
       initial-size: 3
       min-idle: 3
       max-active: 10

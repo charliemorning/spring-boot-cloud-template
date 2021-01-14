@@ -18,7 +18,7 @@ public class FooScheduler {
 
     @Scheduled(fixedRate = 1 * 1000)
     private void cycleRun() {
-        kafkaProducer.send("topic1:1:3", "hehe");
+        kafkaProducer.send("topic", "hehe");
         log.info("Run each 1 second.");
     }
 }
