@@ -2,6 +2,7 @@ package org.charlie.template.util.request;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -28,12 +29,19 @@ public class HTTPUtil {
     private final static String ENTITY_CHARSET = "UTF-8";
 
     public static String doPost(String url, Map<String, Object> parameters) throws JsonProcessingException {
+
+        Preconditions.checkNotNull(url, "[url] is null.");
+        Preconditions.checkNotNull(parameters, "[parameters] is null.");
+
         ObjectMapper mapper = new ObjectMapper();
         String paramJsonString = mapper.writeValueAsString(parameters);
         return doPost(url, paramJsonString);
     }
 
     public static String doPost(String url, String paramJsonString) {
+
+        Preconditions.checkNotNull(url, "[url] is null.");
+        Preconditions.checkNotNull(paramJsonString, "[parameters] is null.");
 
         HttpPost httpPost = new HttpPost(url);
         httpPost.setHeader(POST_HEADER_KEY, POST_HEADER_VALUE);
