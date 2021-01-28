@@ -1,4 +1,4 @@
-package org.charlie.template.util.request;
+package org.charlie.template.manager.utility.request;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * @author zhangchen
+ * @author Charlie
  * @version 0.1.0
  */
 @Slf4j

@@ -1,5 +1,6 @@
-package org.charlie.template.util.thread;
+package org.charlie.template.manager.utility.thread;
 
+import lombok.extern.slf4j.Slf4j;
 import org.charlie.template.constants.SystemConstants;
 import org.springframework.stereotype.Component;
 
@@ -9,10 +10,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- * @author zhangchen
+ * @author Charlie
  * @version 0.1.0
  */
 @Component
+@Slf4j
 public class ThreadPool {
 
     private ExecutorService executorService = Executors.newFixedThreadPool(SystemConstants.THREADING_POOL_SIZE);
@@ -25,7 +27,7 @@ public class ThreadPool {
         return executorService.submit(callable);
     }
 
-    public void excute(Runnable runnable) {
+    public void execute(Runnable runnable) {
         executorService.execute(runnable);
     }
 }

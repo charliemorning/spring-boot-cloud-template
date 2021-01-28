@@ -1,6 +1,5 @@
-package org.charlie.template.util.mq;
+package org.charlie.template.manager.middleware.kafka;
 
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 @Component
