@@ -12,11 +12,11 @@
     <packaging>pom</packaging>
     <version>0.1.0</version>
     <modules>
+        <module>../spring-boot-cloud-template-common</module>
         <module>../spring-boot-cloud-template-dao</module>
+        <module>../spring-boot-cloud-template-manager</module>
         <module>../spring-boot-cloud-template-service</module>
         <module>../spring-boot-cloud-template-controller</module>
-        <module>../spring-boot-cloud-template-global</module>
-        <module>../spring-boot-cloud-template-api</module>
     </modules>
 
     <properties>
@@ -24,6 +24,9 @@
         <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
         <springcloud.version>2.2.2.RELEASE</springcloud.version>
         <dubbo.version>2.7.6</dubbo.version>
+        <lombok.version>1.18.12</lombok.version>
+        <common-lang3.version>3.10</common-lang3.version>
+        <commons-io.version>2.6</commons-io.version>
         <spring.version>5.2.5.RELEASE</spring.version>
         <srping-kafka.version>2.4.8.RELEASE</srping-kafka.version>
         <spring-data-hadoop.version>2.5.0.RELEASE</spring-data-hadoop.version>
@@ -63,7 +66,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -71,7 +74,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.10</version>
+            <version>${common-lang3.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
@@ -85,7 +88,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.6</version>
+            <version>${commons-io.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-beans -->
@@ -122,13 +125,34 @@
             <version>${springboot.version}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-cache</artifactId>
-            <version>${springboot.version}</version>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
 
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
