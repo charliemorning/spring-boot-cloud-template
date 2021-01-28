@@ -2,7 +2,7 @@ package org.charlie.template.exception;
 
 
 /**
- * @author zhangchen
+ * @author Charlie
  */
 public class FooException extends Exception {
     public FooException(String message) {

@@ -1,7 +1,6 @@
-package org.charlie.template.util.context;
+package org.charlie.template.common.context;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -9,13 +8,12 @@ import org.springframework.stereotype.Component;
 
 
 /**
- * @author zhangchen
+ * @author Charlie
  * @version 0.1.0
  */
 @Component
+@Slf4j
 public class SpringContext implements ApplicationContextAware {
-
-    final static Logger LOGGER = LoggerFactory.getLogger(SpringContext.class);
 
     private static ApplicationContext applicationContext = null;
 
@@ -23,7 +21,7 @@ public class SpringContext implements ApplicationContextAware {
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         if(SpringContext.applicationContext == null){
             SpringContext.applicationContext  = applicationContext;
-            LOGGER.debug("Application context has been set: %s" + String.valueOf(SpringContext.applicationContext));
+            log.debug(String.format("Application context has been set: %s", String.valueOf(SpringContext.applicationContext)));
         }
     }
 
@@ -33,12 +31,11 @@ public class SpringContext implements ApplicationContextAware {
 
     public static Object getBean(String name){
         return getApplicationContext().getBean(name);
-
     }
 
     public static <T> T getBean(Class<T> clazz){
-        LOGGER.debug(String.valueOf(clazz));
-        LOGGER.debug(String.valueOf(getApplicationContext()));
+        log.debug(String.valueOf(clazz));
+        log.debug(String.valueOf(getApplicationContext()));
         return getApplicationContext().getBean(clazz);
     }
 
