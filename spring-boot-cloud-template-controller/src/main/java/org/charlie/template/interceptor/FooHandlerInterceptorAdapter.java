@@ -1,9 +1,6 @@
 package org.charlie.template.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.charlie.template.filter.FooFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -12,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author zhangchen
+ * @author Charlie
  */
 @Slf4j
 public class FooHandlerInterceptorAdapter extends HandlerInterceptorAdapter {

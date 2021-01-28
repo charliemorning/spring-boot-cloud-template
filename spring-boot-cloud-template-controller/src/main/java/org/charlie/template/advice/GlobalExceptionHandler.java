@@ -2,12 +2,10 @@ package org.charlie.template.advice;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.charlie.template.constants.FooConstants;
 import org.charlie.template.exception.FooException;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.charlie.template.vo.ResponseVO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,8 +21,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    FooConstants fooConstants;
-
     @ExceptionHandler(value={FooException.class})
     @ResponseStatus(HttpStatus.OK)
     public ResponseVO commonServiceExclkeption(FooException ex) {
@@ -32,7 +28,7 @@ public class GlobalExceptionHandler {
         log.error(ExceptionUtils.getStackTrace(ex));
 
         return ResponseVO.builder()
-                .resultCode(fooConstants.RESULT_CODE_ERROR)
+                .resultCode(FooConstants.RESULT_CODE_ERROR)
                 .resultMessage("ERROR")
                 .build();
     }
@@ -42,7 +38,7 @@ public class GlobalExceptionHandler {
     public ResponseVO illegalArgumentException(IllegalArgumentException ex) {
         log.error(ExceptionUtils.getStackTrace(ex));
         return ResponseVO.builder()
-                .resultCode(fooConstants.RESULT_CODE_ERROR)
+                .resultCode(FooConstants.RESULT_CODE_ERROR)
                 .resultMessage("ERROR")
                 .build();
     }
@@ -53,7 +49,7 @@ public class GlobalExceptionHandler {
         log.error(String.format("Unknown exception: %s", ExceptionUtils.getMessage(ex)));
         log.error(ExceptionUtils.getStackTrace(ex));
         return ResponseVO.builder()
-                .resultCode(fooConstants.RESULT_CODE_ERROR)
+                .resultCode(FooConstants.RESULT_CODE_ERROR)
                 .resultMessage("ERROR")
                 .build();
     }
@@ -64,7 +60,7 @@ public class GlobalExceptionHandler {
         log.info("Transaction Message Reader Error:" + HttpStatus.INTERNAL_SERVER_ERROR, ex);
         log.error(ExceptionUtils.getStackTrace(ex));
         return ResponseVO.builder()
-                .resultCode(fooConstants.RESULT_CODE_ERROR)
+                .resultCode(FooConstants.RESULT_CODE_ERROR)
                 .resultMessage("ERROR")
                 .build();
     }
@@ -74,7 +70,7 @@ public class GlobalExceptionHandler {
     public ResponseVO unknownThrowable(Throwable t) {
         log.info("Unknown error:" + HttpStatus.INTERNAL_SERVER_ERROR, t);
         return ResponseVO.builder()
-                .resultCode(fooConstants.RESULT_CODE_ERROR)
+                .resultCode(FooConstants.RESULT_CODE_ERROR)
                 .resultMessage("ERROR")
                 .build();
     }
