@@ -198,7 +198,7 @@
 
         <dependency>
             <groupId>org.charlie</groupId>
-            <artifactId>spring-boot-cloud-template-global</artifactId>
+            <artifactId>spring-boot-cloud-template-common</artifactId>
             <version>0.1.0</version>
         </dependency>
 
