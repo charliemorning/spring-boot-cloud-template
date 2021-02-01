@@ -15,10 +15,21 @@ eureka:
       zone: chengdu #所在区域
     hostname: localhost #服务主机名称
     prefer-ip-address: false #是否优先使用ip来作为主机名
+
 spring:
   cloud:
     inetutils:
       preferred-networks: 127.0.
+  data:
+    web:
+      pageable:
+        size-parameter: size
+        page-parameter: page
+        default-page-size: 10
+        one-indexed-parameters: false
+        max-page-size: 2000
+        prefix:
+        qualifier-delimiter: _
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
@@ -58,3 +69,6 @@ mybatis:
     map-underscore-to-camel-case: true
 foo:
   redis-key-prefix: foo
+
+es:
+  urls: 127.0.0.1:9200
