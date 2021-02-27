@@ -32,7 +32,6 @@
         <spring-data-hadoop.version>2.5.0.RELEASE</spring-data-hadoop.version>
         <jackson.version>2.11.0</jackson.version>
         <guava.version>23.0</guava.version>
-        <druid.version>1.1.22</druid.version>
         <httpclient.version>4.5.12</httpclient.version>
         <httpasyncclient.version>4.1.4</httpasyncclient.version>
         <mysql-conn-java.version>8.0.21</mysql-conn-java.version>
