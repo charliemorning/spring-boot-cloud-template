@@ -65,10 +65,9 @@ spring:
 mybatis:
   type-aliases-package: org.charlie.template
   mapper-locations: classpath:mapper/mysql/*.xml
-  configuration:
-    map-underscore-to-camel-case: true
+  config-location: classpath:mybatis/mybatis-config.xml
 foo:
-  redis-key-prefix: foo
+  redis-key-prefix: template
 
 es:
   urls: 127.0.0.1:9200

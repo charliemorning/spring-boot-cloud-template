@@ -7,11 +7,11 @@
         <result column="FOO_INT" jdbcType="INTEGER" property="fooInt" />
     </resultMap>
 
-    <select id="selectBars" parameterMap="barMap" resultType="java.util.List">
+    <select id="selectBars" resultType="java.util.List">
         SELECT * FROM BAR
     </select>
 
-    <insert id="insertBar" parameterMap="barMap">
+    <insert id="insertBar" parameterType="org.charlie.template.po.BarPO">
         INSERT INTO BAR (
             FOO_INT
         ) VALUES (
@@ -19,13 +19,8 @@
         )
     </insert>
 
-    <update id="updatBar" parameterMap="barMap">
-        UPDATE BAR
-        SET
 
-    </update>
-
-    <delete id="deleteBar" parameterMap="barMap">
+    <delete id="deleteBar" parameterType="org.charlie.template.po.BarPO">
         DELETE FROM BAR
     </delete>
 </mapper>

@@ -7,19 +7,21 @@ import org.charlie.template.bo.FooBO;
 import org.charlie.template.dao.BarDAO;
 import org.charlie.template.dao.FooDAO;
 import org.charlie.template.po.FooPO;
+import org.charlie.template.utilities.BeanUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-@Service
-@CacheConfig(cacheNames = {"fooCache"})
 @Slf4j
+@Component("fooServiceImpl")
+//@CacheConfig(cacheNames = {"fooCache"})
 public class FooServiceImpl implements FooService {
 
     private FooDAO fooDAO;
@@ -30,9 +32,12 @@ public class FooServiceImpl implements FooService {
     }
 
     @Override
-    @Cacheable("fooList")
+//    @Cacheable("fooList")
     public List<FooBO> queryFoos() {
         log.info("Fail to hit foo cache.");
+
+//        List<FooPO> fooPOs = fooDAO.selectFoos();
+//        BeanUtility.()
         return Lists.transform(fooDAO.selectFoos(), new Function<FooPO, FooBO>() {
             @Nullable
             @Override
@@ -43,7 +48,7 @@ public class FooServiceImpl implements FooService {
     }
 
     @Override
-    @CachePut(cacheNames = { "foo" }, key = "#foo.fooId")
+//    @CachePut(cacheNames = { "foo" }, key = "#foo.fooId")
     public boolean addFoo(FooBO fooBO) {
         log.info("Add to foo cache.");
         fooDAO.insertFoo(FooBO.toPO(fooBO));
@@ -51,14 +56,14 @@ public class FooServiceImpl implements FooService {
     }
 
     @Override
-    @CacheEvict(cacheNames = { "foo" }, key = "#foo.fooId")
+//    @CacheEvict(cacheNames = { "foo" }, key = "#foo.fooId")
     public void modifyFoo(FooBO fooBO) {
         log.info("Update foo cache.");
         fooDAO.updateFoo(FooBO.toPO(fooBO));
     }
 
     @Override
-    @CacheEvict(cacheNames = { "foo" }, key = "#foo.fooId")
+//    @CacheEvict(cacheNames = { "foo" }, key = "#foo.fooId")
     public void removeFoo(FooBO fooBO) {
         fooDAO.deleteFoo(FooBO.toPO(fooBO));
     }

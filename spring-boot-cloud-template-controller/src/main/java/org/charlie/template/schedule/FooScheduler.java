@@ -14,6 +14,6 @@ public class FooScheduler {
 
     @Scheduled(fixedRate = 1 * 1000)
     private void cycleRun() {
-        log.info("Run each 1 second.");
+        /*log.info("Run each 1 second.");*/
     }
 }
