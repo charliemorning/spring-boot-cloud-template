@@ -8,11 +8,11 @@
         <result column="FOO_DATE" jdbcType="DATE" property="fooDate" />
     </resultMap>
 
-    <select id="selectFoos" parameterMap="fooMap" resultType="java.util.List">
+    <select id="selectFoos" resultType="java.util.List">
         SELECT * FROM FOO
     </select>
 
-    <insert id="insertFoo" parameterMap="fooMap">
+    <insert id="insertFoo" parameterType="org.charlie.template.po.FooPO">
         INSERT INTO FOO (
             FOO_STR,
             FOO_DATE
@@ -22,11 +22,7 @@
         )
     </insert>
 
-    <update id="updatFoo" parameterMap="fooMap">
-        UPDATE FOO
-    </update>
-
-    <delete id="deleteFoo" parameterMap="fooMap">
+    <delete id="deleteFoo" parameterType="org.charlie.template.po.FooPO">
         DELETE FROM FOO
     </delete>
 

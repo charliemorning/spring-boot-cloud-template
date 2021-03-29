@@ -32,17 +32,15 @@ spring:
         qualifier-delimiter: _
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://127.0.0.1:3306/foo
-    username: root
-    password: root
-    hikari:
-      pool-name: MyHikariCP
-      minimum-idle: 5
-      maximum-pool-size: 1000
-      connection-timeout: 30000
-      max-lifetime: 45000
-      connection-test-query: SELECT 1
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql://127.0.0.1:3306/foo
+      username: root
+      password: root
+      initial-size: 3
+      min-idle: 3
+      max-active: 10
+      max-wait: 6000
   redis:
     database: 0
     host: 127.0.0.1
@@ -66,11 +64,10 @@ spring:
 #      bootstrap-servers: 127.0.0.1:9092
 mybatis:
   type-aliases-package: org.charlie.template
-  config-location: classpath:mybatis-config.xml
   mapper-locations: classpath:mapper/mysql/*.xml
-
+  config-location: classpath:mybatis/mybatis-config.xml
 foo:
-  redis-key-prefix: foo
+  redis-key-prefix: template
 
 es:
   urls: 127.0.0.1:9200

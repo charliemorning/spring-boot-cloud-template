@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class Page<T> {
+public class Paging<PO> {
     int total;
     int offset;
     int size;
-    List<T> elements;
+    List<PO> elements;
 }
