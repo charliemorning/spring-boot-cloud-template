@@ -17,12 +17,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-cache</artifactId>
-            <version>${springboot.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.charlie</groupId>
             <artifactId>spring-boot-cloud-template-dao</artifactId>
             <version>0.1.0</version>
