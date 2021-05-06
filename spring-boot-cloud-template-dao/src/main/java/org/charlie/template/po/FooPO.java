@@ -13,11 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-//@Entity
-//@Table(name = "foo")
 public class FooPO{
-//    @Id
-//    @GeneratedValue
     private int fooInt;
     private String fooStr;
     private Date fooDate;
