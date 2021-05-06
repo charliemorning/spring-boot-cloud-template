@@ -35,6 +35,7 @@
         <httpclient.version>4.5.12</httpclient.version>
         <httpasyncclient.version>4.1.4</httpasyncclient.version>
         <mysql-conn-java.version>8.0.21</mysql-conn-java.version>
+        <hbase.version>2.0.0</hbase.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
@@ -118,11 +119,11 @@
         </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>1.9.5</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
