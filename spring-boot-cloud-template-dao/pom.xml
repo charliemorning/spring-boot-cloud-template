@@ -4,7 +4,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <!--  spring-boot-cloud-template by zhangchen  -->
-
     <parent>
         <artifactId>spring-boot-cloud-template</artifactId>
         <groupId>org.charlie</groupId>
@@ -50,8 +49,6 @@
             <version>19.3.0.0</version>
         </dependency>-->
 
-
-
         <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -60,18 +57,18 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
-        <dependency>
+        <!--<dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>${druid.version}</version>
-        </dependency>
+        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter -->
-        <dependency>
+        <!--<dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
             <version>${druid.version}</version>
-        </dependency>
+        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-dao -->
         <!--<dependency>
