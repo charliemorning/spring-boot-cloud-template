@@ -22,6 +22,7 @@
     <properties>
         <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
         <springcloud.version>2.2.2.RELEASE</springcloud.version>
+        <springboot.version>2.2.6.RELEASE</springboot.version>
         <lombok.version>1.18.12</lombok.version>
         <guava.version>23.0</guava.version>
     </properties>
