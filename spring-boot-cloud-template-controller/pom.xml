@@ -40,11 +40,11 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/javax/javaee-api -->
-        <dependency>
+        <!--<dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>8.0</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>org.charlie</groupId>
