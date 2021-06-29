@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.charlie.template.dao.FooDAO">
+
+    <resultMap id="fooMap" type="org.charlie.template.po.FooPO">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+    </resultMap>
+
+    <select id="selectFoos" resultType="java.util.List">
+        select * from foo
+    </select>
+
+    <insert id="insertFoo" parameterType="org.charlie.template.po.FooPO">
+        insert into foo (
+            id,
+            name
+        ) values (
+            #{id,jdbcType=int},
+            #{name,jdbcType=VARCHAR}
+         )
+    </insert>
+
+    <delete id="deleteFoo" parameterType="org.charlie.template.po.FooPO">
+        delete from foo
+    </delete>
+
+</mapper>

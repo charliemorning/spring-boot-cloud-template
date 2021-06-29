@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://127.0.0.1:3306/foo
+    username: root
+    password: root
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 1
+      idle-timeout: 30000
+      connection-timeout: 20000
+      connection-test-query: select 1
+mybatis:
+  type-aliases-package: org.charlie.template
+  mapper-locations: classpath:mapper/mysql/*.xml
+  config-location: classpath:mybatis/mybatis-config.xml

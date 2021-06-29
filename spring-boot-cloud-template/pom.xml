@@ -25,6 +25,10 @@
         <springboot.version>2.2.6.RELEASE</springboot.version>
         <lombok.version>1.18.12</lombok.version>
         <guava.version>23.0</guava.version>
+
+        <spring.version>5.2.5.RELEASE</spring.version>
+        <mybatis-starter.version>2.1.2</mybatis-starter.version>
+        <mysql-conn-java.version>8.0.21</mysql-conn-java.version>
     </properties>
 
     <parent>
@@ -67,6 +71,33 @@
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-beans -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
