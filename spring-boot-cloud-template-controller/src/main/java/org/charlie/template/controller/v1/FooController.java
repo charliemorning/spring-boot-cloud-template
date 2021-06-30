@@ -25,7 +25,7 @@ public class FooController {
     }
 
     @GetMapping("/{id:\\d+}")
-    public FooVO getFoos(@PathVariable int id) {
+    public List<FooVO> getFoos(@PathVariable int id) {
 
         FooBO fooBO = FooBO.builder().id(id).build();
 
@@ -33,16 +33,18 @@ public class FooController {
             @Nullable
             @Override
             public FooVO apply(@Nullable FooBO fooBO) {
-                FooVO fooVO = BeanUtility.copyFrom(fooBO);
+                FooVO fooVO = FooVO.builder().build();
+                BeanUtility.copy(fooBO, fooVO);
                 return fooVO;
             }
         });
-        return fooVOs.get(0);
+        return fooVOs;
     }
 
     @PutMapping(value = "/")
     public void createFoo(@RequestBody FooVO fooVO) {
-        FooBO fooBO = BeanUtility.copyFrom(fooVO);
+        FooBO fooBO = FooBO.builder().build();
+        BeanUtility.copy(fooVO, fooBO);
         fooService.createFoo(fooBO);
     }
 

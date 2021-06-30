@@ -7,8 +7,8 @@
         <result column="name" jdbcType="VARCHAR" property="name" />
     </resultMap>
 
-    <select id="selectFoos" resultType="java.util.List">
-        select * from foo
+    <select id="selectFoos" resultType="org.charlie.template.po.FooPO" resultMap="fooMap" parameterType="org.charlie.template.po.FooPO">
+        select id, name from foo
     </select>
 
     <insert id="insertFoo" parameterType="org.charlie.template.po.FooPO">
@@ -16,10 +16,14 @@
             id,
             name
         ) values (
-            #{id,jdbcType=int},
+            #{id,jdbcType=INTEGER},
             #{name,jdbcType=VARCHAR}
          )
     </insert>
+
+    <update id="updateFoo">
+
+    </update>
 
     <delete id="deleteFoo" parameterType="org.charlie.template.po.FooPO">
         delete from foo

@@ -46,6 +46,9 @@ public class FooServiceImpl implements FooService {
     @Override
     public void createFoo(FooBO fooBO) {
 
+        FooPO fooPO = FooPO.builder().build();
+        BeanUtility.copy(fooBO, fooPO);
+        fooDAO.insertFoo(fooPO);
     }
 
     @Override
