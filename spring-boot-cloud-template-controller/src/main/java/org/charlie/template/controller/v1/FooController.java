@@ -24,6 +24,21 @@ public class FooController {
         this.fooService = fooService;
     }
 
+    @GetMapping("")
+    public List<FooVO> getFoosPagintated() {
+
+        List<FooVO> fooVOs = Lists.transform(fooService.queryFoos(null), new Function<FooBO, FooVO>() {
+            @Nullable
+            @Override
+            public FooVO apply(@Nullable FooBO fooBO) {
+                FooVO fooVO = FooVO.builder().build();
+                BeanUtility.copy(fooBO, fooVO);
+                return fooVO;
+            }
+        });
+        return fooVOs;
+    }
+
     @GetMapping("/{id:\\d+}")
     public List<FooVO> getFoos(@PathVariable int id) {
 
@@ -50,13 +65,15 @@ public class FooController {
 
     @PostMapping(value = "/")
     public void updateFoo(@RequestBody FooVO fooVO) {
-        FooBO fooBO = BeanUtility.copyFrom(fooVO);
+        FooBO fooBO = FooBO.builder().build();
+        BeanUtility.copy(fooVO, fooBO);
         fooService.modifyFoo(fooBO);
     }
 
     @PatchMapping(value = "/{id:\\d+}")
     public void patiallyUpdateFoo(@PathVariable int id, @RequestBody FooVO fooVO) {
-        FooBO fooBO = BeanUtility.copyFrom(fooVO);
+        FooBO fooBO = FooBO.builder().build();
+        BeanUtility.copy(fooVO, fooBO);
         fooBO.setId(id);
         fooService.modifyFoo(fooBO);
     }

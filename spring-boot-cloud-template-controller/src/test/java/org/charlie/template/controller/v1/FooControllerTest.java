@@ -50,21 +50,91 @@ public class FooControllerTest {
     @Test
     public void whenCRUDSuccess() throws Exception {
 
+        // init test data
         List<FooVO> fooVOs = Lists.newArrayList();
         for (int i = 0; i < 10; i++) {
             fooVOs.add(FooVO.builder().id(i).name("foo" + String.valueOf(i)).build());
         }
 
         for (FooVO fooVO: fooVOs) {
-            String responseContent = mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/foo/")
-                        .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(fooVO)))
+
+            // create test
+            mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/foo/")
+                    .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(fooVO)))
                     .andExpect(status().isOk())
                     .andReturn()
                     .getResponse()
                     .getContentAsString();
 
-            log.info(mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/foo/1" ).contentType(MediaType.APPLICATION_JSON)
+            // read test
+            log.info(mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/foo/" + fooVO.getId()).contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(fooVO)))
+                    .andExpect(status().isOk())
+                    .andReturn()
+                    .getResponse()
+                    .getContentAsString());
+        }
+
+        // update test
+        for (FooVO fooVO: fooVOs) {
+
+            String newName = fooVO.getName() + "update";
+            fooVO.setName(newName);
+
+            mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/foo/")
+                    .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(fooVO)))
+                    .andExpect(status().isOk())
+                    .andReturn()
+                    .getResponse()
+                    .getContentAsString();
+
+            // read test
+            log.info(mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/foo/" + fooVO.getId()).contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(fooVO)))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$..name").value(newName))
+                    .andReturn()
+                    .getResponse()
+                    .getContentAsString());
+        }
+
+        // update test
+        for (FooVO fooVO: fooVOs) {
+
+            String newName = fooVO.getName() + "patch";
+            fooVO.setName(newName);
+
+            // update test
+            mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/foo/" + fooVO.getId())
+                    .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(fooVO)))
+                    .andExpect(status().isOk())
+                    .andReturn()
+                    .getResponse()
+                    .getContentAsString();
+
+            // read test
+            log.info(mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/foo/" + fooVO.getId()).contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(fooVO)))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$..name").value(newName))
+                    .andReturn()
+                    .getResponse()
+                    .getContentAsString());
+
+        }
+
+        // delete test
+        for (FooVO fooVO: fooVOs) {
+            mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/foo/" + fooVO.getId())
+                    .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(fooVO)))
+                    .andExpect(status().isOk())
+                    .andReturn()
+                    .getResponse()
+                    .getContentAsString();
+
+            log.info(mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/foo")
+                    .contentType(MediaType.APPLICATION_JSON))
+//                    .content(objectMapper.writeValueAsString(fooVO)))
                     .andExpect(status().isOk())
                     .andReturn()
                     .getResponse()
@@ -91,7 +161,7 @@ public class FooControllerTest {
     @Test
     public void whenQuerySuccess() throws Exception {
         FooVO fooVO = FooVO.builder().id(1).name("foo1").build();
-        String result = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/foo/1").contentType(MediaType.APPLICATION_JSON_UTF8)
+        String result = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/foo/1").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(fooVO)))
                 .andExpect(status().isOk())
                 .andReturn()

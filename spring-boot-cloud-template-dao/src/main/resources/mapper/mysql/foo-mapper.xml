@@ -9,6 +9,11 @@
 
     <select id="selectFoos" resultType="org.charlie.template.po.FooPO" resultMap="fooMap" parameterType="org.charlie.template.po.FooPO">
         select id, name from foo
+        <where>
+            <if test="id != null">
+                id=#{id,jdbcType=INTEGER}
+            </if>
+        </where>
     </select>
 
     <insert id="insertFoo" parameterType="org.charlie.template.po.FooPO">
@@ -21,12 +26,19 @@
          )
     </insert>
 
-    <update id="updateFoo">
-
+    <update id="updateFoo" parameterType="org.charlie.template.po.FooPO">
+        update foo
+        <set>
+            <if test="name != null">name=#{name,jdbcType=VARCHAR}</if>
+        </set>
+        where
+            id=#{id,jdbcType=INTEGER}
     </update>
 
     <delete id="deleteFoo" parameterType="org.charlie.template.po.FooPO">
         delete from foo
+        where
+            id=#{id,jdbcType=INTEGER}
     </delete>
 
 </mapper>

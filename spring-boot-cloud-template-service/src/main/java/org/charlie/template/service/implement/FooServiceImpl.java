@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -27,10 +28,15 @@ public class FooServiceImpl implements FooService {
 
     @Override
     public List<FooBO> queryFoos(FooBO fooBO) {
-        return Lists.transform(fooDAO.selectFoos(FooPO.builder()
-                .id(fooBO.getId())
-                .name(fooBO.getName())
-                .build()
+        FooPO fooPO = FooPO.builder().build();
+        if (Objects.isNull(fooBO)) {
+            fooPO = null;
+        } else {
+            BeanUtility.copy(fooBO, fooPO);
+        }
+
+
+        return Lists.transform(fooDAO.selectFoos(fooPO
         ), new Function<FooPO, FooBO>() {
             @Nullable
             @Override
@@ -45,7 +51,6 @@ public class FooServiceImpl implements FooService {
 
     @Override
     public void createFoo(FooBO fooBO) {
-
         FooPO fooPO = FooPO.builder().build();
         BeanUtility.copy(fooBO, fooPO);
         fooDAO.insertFoo(fooPO);
@@ -53,11 +58,15 @@ public class FooServiceImpl implements FooService {
 
     @Override
     public void modifyFoo(FooBO fooBO) {
-
+        FooPO fooPO = FooPO.builder().build();
+        BeanUtility.copy(fooBO, fooPO);
+        fooDAO.updateFoo(fooPO);
     }
 
     @Override
     public void removeFoo(FooBO fooBO) {
-
+        FooPO fooPO = FooPO.builder().build();
+        BeanUtility.copy(fooBO, fooPO);
+        fooDAO.deleteFoo(fooPO);
     }
 }
