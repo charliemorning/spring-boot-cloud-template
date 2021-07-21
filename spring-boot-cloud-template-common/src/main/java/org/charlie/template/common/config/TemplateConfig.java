@@ -10,4 +10,5 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "template")
 public class TemplateConfig {
     private int threadNum;
+    private String redisKeyPrefix;
 }
