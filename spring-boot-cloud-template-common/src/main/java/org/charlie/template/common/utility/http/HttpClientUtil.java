@@ -4,6 +4,7 @@ package org.charlie.template.common.utility.http;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -11,8 +12,7 @@ import org.apache.http.HttpRequest;
 import org.apache.http.NoHttpResponseException;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.*;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -29,6 +29,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
+/**
+ * @author Charlie
+ */
 @Slf4j
 public class HttpClientUtil {
 
@@ -94,34 +97,76 @@ public class HttpClientUtil {
                 .build();
     }
 
-    public static String doPost(String url, Map<String, Object> parameters, int timeout) throws JsonProcessingException {
-
-        Preconditions.checkNotNull(url, "[url] is null.");
-        Preconditions.checkNotNull(parameters, "[parameters] is null.");
-        Preconditions.checkArgument(timeout > 0, "Negative [timeout] is illegal.");
-
-        ObjectMapper mapper = new ObjectMapper();
-        String paramJsonString = mapper.writeValueAsString(parameters);
-        return doPost(url, paramJsonString, timeout);
+    public static boolean checkUrl(String url) {
+        // TODO: add implementation here
+        return true;
     }
 
-    public static String doPost(String url, String paramJsonString, int timeout) {
+    private static String concatParamToUrl(String url, Map<String, Object> parameters) {
+        StringBuffer fullUrlStringBuffer = new StringBuffer();
+        fullUrlStringBuffer.append(url);
+        if (parameters.size() > 0) {
+            fullUrlStringBuffer.append("?");
+        }
+        int i = 0;
+        for (Map.Entry<String, Object> param: parameters.entrySet()) {
+            fullUrlStringBuffer.append(param.getKey());
+            fullUrlStringBuffer.append("=");
+            fullUrlStringBuffer.append(param.getValue());
+            if (i < parameters.size() - 1) {
+                fullUrlStringBuffer.append("&");
+            }
+        }
+        return fullUrlStringBuffer.toString();
+    }
 
+    public static String request(String url, Method method, int timeout) throws JsonProcessingException {
+        return request(url, Maps.newHashMap(), method, timeout);
+    }
+
+    /**
+     *
+     * @param url
+     * @param parameters
+     * @param method
+     * @param timeout
+     * @return
+     * @throws JsonProcessingException
+     */
+    public static String request(String url, Map<String, Object> parameters, Method method, int timeout) throws JsonProcessingException {
         Preconditions.checkNotNull(url, "[url] is null.");
-        Preconditions.checkNotNull(paramJsonString, "[parameters] is null.");
+        Preconditions.checkState(checkUrl(url), String.format("[url:%s] is invalid.", url));
 
-        HttpPost httpPost = new HttpPost(url);
+        Preconditions.checkNotNull(parameters, "[parameters] is null.");
 
-        httpPost.setHeader(POST_HEADER_KEY, POST_HEADER_VALUE);
-        httpPost.setEntity(new StringEntity(paramJsonString, ENTITY_CHARSET));
+        Preconditions.checkArgument(timeout > 0,
+                String.format("Negative [timeout:%s] is illegal.", String.valueOf(timeout)));
+
+        String responseString = null;
+        if (Method.GET.equals(method)) {
+            responseString = get(url, parameters, timeout);
+        } else if (Method.POST.equals(method)) {
+            responseString = post(url, parameters, timeout);
+        } else if (Method.PUT.equals(method)) {
+            // TODO: add implementation
+        } else if (Method.PATCH.equals(method)) {
+            // TODO: add implementation
+        } else if (Method.DELETE.equals(method)) {
+            // TODO: add implementation
+        } else {
+            // TODO: add implementation
+        }
+        return responseString;
+    }
+
+    private static String execute(HttpRequestBase requester, int timeout) {
 
         String responseString = null;
         CloseableHttpResponse response = null;
-
         CloseableHttpClient httpClient = getHttpClient(timeout);
 
         try {
-            response = httpClient.execute(httpPost);
+            response = httpClient.execute(requester);
             responseString = EntityUtils.toString(response.getEntity());
         } catch (IOException e) {
             log.error(ExceptionUtils.getMessage(e));
@@ -134,7 +179,7 @@ public class HttpClientUtil {
             }
         } finally {
 
-            httpPost.releaseConnection();
+            requester.releaseConnection();
 
             if (null != response) {
                 try {
@@ -154,6 +199,26 @@ public class HttpClientUtil {
                 }
             }
         }
+
         return responseString;
+    }
+
+    private static String post(String url, Map<String, Object> parameters, int timeout) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        String paramJsonString = mapper.writeValueAsString(parameters);
+        return post(url, paramJsonString, timeout);
+    }
+
+    private static String post(String url, String paramJsonString, int timeout) {
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.setHeader(POST_HEADER_KEY, POST_HEADER_VALUE);
+        httpPost.setEntity(new StringEntity(paramJsonString, ENTITY_CHARSET));
+        return execute(httpPost, timeout);
+    }
+
+    private static String get(String url, Map<String, Object> parameters, int timeout) {
+        String urlWithParam = concatParamToUrl(url, parameters);
+        HttpGet httpGet = new HttpGet(urlWithParam);
+        return execute(httpGet, timeout);
     }
 }
