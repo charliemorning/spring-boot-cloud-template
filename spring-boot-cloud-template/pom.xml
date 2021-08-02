@@ -30,6 +30,9 @@
         <spring.version>5.2.5.RELEASE</spring.version>
         <mybatis-starter.version>2.1.2</mybatis-starter.version>
         <mysql-conn-java.version>8.0.21</mysql-conn-java.version>
+
+        <docker.image.prefix>springboot</docker.image.prefix>
+        <dockerfile-maven-version>1.4.13</dockerfile-maven-version>
     </properties>
 
     <parent>
