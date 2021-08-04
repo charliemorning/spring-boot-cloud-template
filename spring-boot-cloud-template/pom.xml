@@ -54,6 +54,20 @@
         </dependencies>
     </dependencyManagement>
 
+    <build>
+        <!-- To define the plugin version in your parent POM -->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.22.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+
     <dependencies>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter -->
