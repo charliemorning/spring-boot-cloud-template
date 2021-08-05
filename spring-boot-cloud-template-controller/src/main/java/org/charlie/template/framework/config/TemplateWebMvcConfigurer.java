@@ -1,5 +1,6 @@
 package org.charlie.template.framework.config;
 
+import org.charlie.template.framework.interceptor.GlobalTraceIdInterceptorHandler;
 import org.charlie.template.framework.interceptor.TemplateInterceptorHandler;
 import org.charlie.template.framework.interceptor.TemplateInterceptorHandlerAdapter;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,11 @@ public class TemplateWebMvcConfigurer implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         WebMvcConfigurer.super.addInterceptors(registry);
+
+        registry.addInterceptor(
+                new GlobalTraceIdInterceptorHandler()
+        ).addPathPatterns("/**");
+
         registry.addInterceptor(
                 new TemplateInterceptorHandler()
         ).addPathPatterns("/**");
