@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  * @param <T>
  */
 @Component
-public class RedisCache<T> {
+public class RedisUtil<T> {
 
     private RedisTemplate<String, T> redisTemplate;
 
@@ -134,6 +134,31 @@ public class RedisCache<T> {
         } else {
             throw new NoSuchElementException();
         }
+    }
+
+    public void delete(String key) {
+        Preconditions.checkNotNull(key, "Null key is not permitted.");
+        String fullKey = concatKey(key);
+        if (redisTemplate.hasKey(fullKey)) {
+            redisTemplate.delete(fullKey);
+        } else {
+            throw new NoSuchElementException();
+        }
+    }
+
+    public void delete(String ... keys) {
+        for (String key: keys) {
+            delete(key);
+        }
+    }
+
+    public boolean transDelete() {
+        redisTemplate.multi();
+
+
+
+        redisTemplate.exec();
+        return false;
     }
 
 }

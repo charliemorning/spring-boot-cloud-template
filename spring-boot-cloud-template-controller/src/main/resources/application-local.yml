@@ -16,7 +16,11 @@ spring:
     host: 127.0.0.1
     port: 6379
     password:
-    jedis: #lettuce:
+#    cluster:
+#      nodes:
+#        - 127.0.0.1:6379
+#    jedis:
+    lettuce:
       pool:
         max-active: 8
         max-wait: -1ms
@@ -29,3 +33,4 @@ mybatis:
 
 template:
   thread-num: 10
+  redis-key-prefix: TEMPLATE_
