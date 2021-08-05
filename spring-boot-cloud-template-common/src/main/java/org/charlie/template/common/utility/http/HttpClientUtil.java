@@ -14,6 +14,7 @@ import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.config.ConnectionConfig;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -25,7 +26,10 @@ import javax.net.ssl.SSLHandshakeException;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 
@@ -41,18 +45,82 @@ public class HttpClientUtil {
 
     private final static String ENTITY_CHARSET = "UTF-8";
 
+    private static final Charset CHAR_SET = Charset.forName("utf-8");
+
     private final static int HTTP_CLIENT_CONN_MANAGER_TTL = 60000;
     private final static int HTTP_CLIENT_MAX_CONN = 200;
-    private final static int HTTP_CLIENT_MAX_PER_ROUTE = 5;
+    private final static int HTTP_CLIENT_MAX_PER_ROUTE = 50;
     private final static int HTTP_CLIENT_TIMEOUT = 1000; // ms
     private final static int HTTP_CLIENT_RETRY = 3;
+
+    private static CloseableHttpClient httpClient;
 
     private static final PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(HTTP_CLIENT_CONN_MANAGER_TTL,
             TimeUnit.MILLISECONDS);
 
     static {
         connManager.setMaxTotal(HTTP_CLIENT_MAX_CONN);
+        connManager.setDefaultConnectionConfig(
+                ConnectionConfig
+                        .custom()
+                        .setCharset(CHAR_SET)
+                        .build()
+        );
         connManager.setDefaultMaxPerRoute(HTTP_CLIENT_MAX_PER_ROUTE);
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectionRequestTimeout(HTTP_CLIENT_TIMEOUT) // 获取连接超时时间
+                .setConnectTimeout(HTTP_CLIENT_TIMEOUT) // 请求超时时间
+                .setSocketTimeout(HTTP_CLIENT_TIMEOUT) // 响应超时时间
+                .build();
+
+        HttpRequestRetryHandler retry = (exception, executionCount, context) -> {
+            if (executionCount >= HTTP_CLIENT_RETRY) {
+                return false;
+            }
+            if (exception instanceof NoHttpResponseException) { // 如果服务器丢掉了连接
+                return true;
+            }
+            if (exception instanceof SSLHandshakeException) { // SSL握手异常
+                return false;
+            }
+            if (exception instanceof InterruptedIOException) { // 超时
+                return true;
+            }
+            if (exception instanceof UnknownHostException) { // 目标服务器不可达
+                return false;
+            }
+            if (exception instanceof SSLException) { // ssl握手异常
+                return false;
+            }
+            HttpClientContext clientContext = HttpClientContext.adapt(context);
+            HttpRequest request = clientContext.getRequest();
+            // 如果请求是幂等的，就再次尝试
+            if (!(request instanceof HttpEntityEnclosingRequest)) {
+                return true;
+            }
+            return false;
+        };
+
+        httpClient = HttpClients.custom()
+                .setDefaultRequestConfig(requestConfig)
+                .setRetryHandler(retry)
+                .setConnectionManager(connManager)
+                .setConnectionManagerShared(true)
+                .build();
+
+        // TODO: move monitor to spring scheduler
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    connManager.closeExpiredConnections();
+                    connManager.closeIdleConnections(1, TimeUnit.SECONDS);
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
+            }
+        }, 0 , 1000);
     }
 
     public static CloseableHttpClient getHttpClient(int timeout) {
@@ -94,7 +162,9 @@ public class HttpClientUtil {
                 .setDefaultRequestConfig(requestConfig)
                 .setRetryHandler(retry)
                 .setConnectionManager(connManager)
+                .setConnectionManagerShared(true)
                 .build();
+
     }
 
     public static boolean checkUrl(String url) {
@@ -163,7 +233,7 @@ public class HttpClientUtil {
 
         String responseString = null;
         CloseableHttpResponse response = null;
-        CloseableHttpClient httpClient = getHttpClient(timeout);
+//        CloseableHttpClient httpClient = getHttpClient(timeout);
 
         try {
             response = httpClient.execute(requester);
@@ -190,14 +260,15 @@ public class HttpClientUtil {
                 }
             }
 
-            if (null != httpClient) {
+            // TODO: should not close client when
+            /*if (null != httpClient) {
                 try {
                     httpClient.close();
                 } catch (IOException e) {
                     log.error("Cannot close http client.");
                     log.error(ExceptionUtils.getMessage(e));
                 }
-            }
+            }*/
         }
 
         return responseString;
