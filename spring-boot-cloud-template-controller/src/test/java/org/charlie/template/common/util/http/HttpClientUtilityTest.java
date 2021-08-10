@@ -2,9 +2,9 @@ package org.charlie.template.common.util.http;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
-import org.charlie.template.common.utility.http.HttpClientUtil;
-import org.charlie.template.common.utility.http.Method;
-import org.charlie.template.common.utility.thread.ThreadUtil;
+import org.charlie.template.common.utils.http.HttpClientUtil;
+import org.charlie.template.common.utils.http.Method;
+import org.charlie.template.common.utils.thread.ThreadUtil;
 import org.junit.Test;
 import org.springframework.util.StopWatch;
 
@@ -16,17 +16,20 @@ public class HttpClientUtilityTest {
     public void postTest() throws JsonProcessingException {
 
         log.info("start test");
-        int postCount = 100000;
+        int postCount = 100;
         StopWatch watch = new StopWatch();
         watch.start();
         while (postCount-- > 0) {
             ThreadUtil.submit(new Runnable() {
                 @Override
                 public void run() {
-                    try {
-                        log.info(HttpClientUtil.request("http://127.0.0.1:9000", Method.GET, 10000));
-                    } catch (JsonProcessingException e) {
-                        e.printStackTrace();
+                    while (true) {
+                        try {
+                            HttpClientUtil.request("http://127.0.0.1:9000", Method.GET, 1000);
+                            Thread.sleep(10);
+                        } catch (JsonProcessingException | InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             });

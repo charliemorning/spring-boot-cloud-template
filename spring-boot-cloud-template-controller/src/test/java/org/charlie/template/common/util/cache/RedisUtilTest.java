@@ -2,19 +2,12 @@ package org.charlie.template.common.util.cache;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.charlie.template.common.utility.cache.RedisUtil;
+import org.charlie.template.common.utils.cache.RedisUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.io.Serializable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.stream.IntStream;
 
 
 @Slf4j

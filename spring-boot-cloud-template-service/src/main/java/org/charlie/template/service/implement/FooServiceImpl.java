@@ -4,7 +4,7 @@ package org.charlie.template.service.implement;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.charlie.template.bo.FooBO;
-import org.charlie.template.common.utility.bean.BeanUtility;
+import org.charlie.template.common.utils.bean.BeanUtil;
 import org.charlie.template.dao.FooDAO;
 import org.charlie.template.po.FooPO;
 import org.charlie.template.service.FooService;
@@ -32,7 +32,7 @@ public class FooServiceImpl implements FooService {
         if (Objects.isNull(fooBO)) {
             fooPO = null;
         } else {
-            BeanUtility.copy(fooBO, fooPO);
+            BeanUtil.copy(fooBO, fooPO);
         }
 
 
@@ -42,7 +42,7 @@ public class FooServiceImpl implements FooService {
             @Override
             public FooBO apply(@Nullable FooPO fooPO) {
                 FooBO fooBO = FooBO.builder().build();
-                BeanUtility.copy(fooPO, fooBO);
+                BeanUtil.copy(fooPO, fooBO);
                 return fooBO;
             }
         });
@@ -52,21 +52,21 @@ public class FooServiceImpl implements FooService {
     @Override
     public void createFoo(FooBO fooBO) {
         FooPO fooPO = FooPO.builder().build();
-        BeanUtility.copy(fooBO, fooPO);
+        BeanUtil.copy(fooBO, fooPO);
         fooDAO.insertFoo(fooPO);
     }
 
     @Override
     public void modifyFoo(FooBO fooBO) {
         FooPO fooPO = FooPO.builder().build();
-        BeanUtility.copy(fooBO, fooPO);
+        BeanUtil.copy(fooBO, fooPO);
         fooDAO.updateFoo(fooPO);
     }
 
     @Override
     public void removeFoo(FooBO fooBO) {
         FooPO fooPO = FooPO.builder().build();
-        BeanUtility.copy(fooBO, fooPO);
+        BeanUtil.copy(fooBO, fooPO);
         fooDAO.deleteFoo(fooPO);
     }
 }

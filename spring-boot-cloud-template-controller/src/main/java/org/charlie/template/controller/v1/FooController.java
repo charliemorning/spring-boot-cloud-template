@@ -4,14 +4,13 @@ package org.charlie.template.controller.v1;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.charlie.template.bo.FooBO;
-import org.charlie.template.common.utility.bean.BeanUtility;
+import org.charlie.template.common.utils.bean.BeanUtil;
 import org.charlie.template.service.FooService;
 import org.charlie.template.vo.FooVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Nullable;
-import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
@@ -33,7 +32,7 @@ public class FooController {
             @Override
             public FooVO apply(@Nullable FooBO fooBO) {
                 FooVO fooVO = FooVO.builder().build();
-                BeanUtility.copy(fooBO, fooVO);
+                BeanUtil.copy(fooBO, fooVO);
                 return fooVO;
             }
         });
@@ -50,7 +49,7 @@ public class FooController {
             @Override
             public FooVO apply(@Nullable FooBO fooBO) {
                 FooVO fooVO = FooVO.builder().build();
-                BeanUtility.copy(fooBO, fooVO);
+                BeanUtil.copy(fooBO, fooVO);
                 return fooVO;
             }
         });
@@ -60,21 +59,21 @@ public class FooController {
     @PutMapping(value = "/")
     public void createFoo(@RequestBody FooVO fooVO) {
         FooBO fooBO = FooBO.builder().build();
-        BeanUtility.copy(fooVO, fooBO);
+        BeanUtil.copy(fooVO, fooBO);
         fooService.createFoo(fooBO);
     }
 
     @PostMapping(value = "/")
     public void updateFoo(@RequestBody FooVO fooVO) {
         FooBO fooBO = FooBO.builder().build();
-        BeanUtility.copy(fooVO, fooBO);
+        BeanUtil.copy(fooVO, fooBO);
         fooService.modifyFoo(fooBO);
     }
 
     @PatchMapping(value = "/{id:\\d+}")
     public void patiallyUpdateFoo(@PathVariable int id, @RequestBody FooVO fooVO) {
         FooBO fooBO = FooBO.builder().build();
-        BeanUtility.copy(fooVO, fooBO);
+        BeanUtil.copy(fooVO, fooBO);
         fooBO.setId(id);
         fooService.modifyFoo(fooBO);
     }
