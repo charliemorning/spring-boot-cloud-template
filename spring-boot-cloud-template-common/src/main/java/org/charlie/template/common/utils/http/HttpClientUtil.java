@@ -1,4 +1,4 @@
-package org.charlie.template.common.utility.http;
+package org.charlie.template.common.utils.http;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -49,7 +49,7 @@ public class HttpClientUtil {
 
     private final static int HTTP_CLIENT_CONN_MANAGER_TTL = 60000;
     private final static int HTTP_CLIENT_MAX_CONN = 200;
-    private final static int HTTP_CLIENT_MAX_PER_ROUTE = 50;
+    private final static int HTTP_CLIENT_MAX_PER_ROUTE = 100;
     private final static int HTTP_CLIENT_TIMEOUT = 1000; // ms
     private final static int HTTP_CLIENT_RETRY = 3;
 
@@ -115,6 +115,7 @@ public class HttpClientUtil {
             public void run() {
                 try {
                     connManager.closeExpiredConnections();
+                    log.info(connManager.getTotalStats().toString());
                     connManager.closeIdleConnections(1, TimeUnit.SECONDS);
                 } catch (Throwable t) {
                     t.printStackTrace();
@@ -259,16 +260,6 @@ public class HttpClientUtil {
                     log.error(ExceptionUtils.getMessage(e));
                 }
             }
-
-            // TODO: should not close client when
-            /*if (null != httpClient) {
-                try {
-                    httpClient.close();
-                } catch (IOException e) {
-                    log.error("Cannot close http client.");
-                    log.error(ExceptionUtils.getMessage(e));
-                }
-            }*/
         }
 
         return responseString;

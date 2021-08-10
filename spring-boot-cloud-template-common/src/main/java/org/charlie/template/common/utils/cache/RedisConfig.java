@@ -1,4 +1,4 @@
-package org.charlie.template.common.utility.cache;
+package org.charlie.template.common.utils.cache;
 
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;

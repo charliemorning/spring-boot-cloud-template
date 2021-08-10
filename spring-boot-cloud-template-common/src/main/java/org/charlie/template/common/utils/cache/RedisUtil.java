@@ -1,4 +1,4 @@
-package org.charlie.template.common.utility.cache;
+package org.charlie.template.common.utils.cache;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
