@@ -1,4 +1,4 @@
-package org.charlie.template.common.utils.http;
+package org.charlie.template.common.utils.io.http;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
