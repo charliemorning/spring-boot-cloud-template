@@ -2,8 +2,8 @@ package org.charlie.template.common.util.http;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
-import org.charlie.template.common.utils.http.HttpClientUtil;
-import org.charlie.template.common.utils.http.Method;
+import org.charlie.template.common.utils.io.http.HttpClientUtil;
+import org.charlie.template.common.utils.io.http.Method;
 import org.charlie.template.common.utils.thread.ThreadUtil;
 import org.junit.Test;
 import org.springframework.util.StopWatch;

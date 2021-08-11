@@ -3,7 +3,7 @@ package org.charlie.template.common.utils.cache;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.charlie.template.common.config.TemplateConfig;
+import org.charlie.template.common.configs.TemplateConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;

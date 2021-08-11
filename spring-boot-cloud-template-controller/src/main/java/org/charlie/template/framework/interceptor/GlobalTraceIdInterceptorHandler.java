@@ -1,7 +1,7 @@
 package org.charlie.template.framework.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.charlie.template.common.constant.TemplateConstants;
+import org.charlie.template.common.constants.TemplateConstants;
 import org.slf4j.MDC;
 import org.springframework.web.servlet.HandlerInterceptor;
 

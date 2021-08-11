@@ -3,8 +3,8 @@ package org.charlie.template.framework.advice;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.charlie.template.common.constant.ErrorConstants;
-import org.charlie.template.common.exception.TemplateException;
+import org.charlie.template.common.constants.ErrorConstants;
+import org.charlie.template.common.exceptions.TemplateException;
 import org.charlie.template.response.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
