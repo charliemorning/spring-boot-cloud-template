@@ -1,4 +1,4 @@
-package org.charlie.template.common.constant;
+package org.charlie.template.common.constants;
 
 public class ErrorConstants {
 

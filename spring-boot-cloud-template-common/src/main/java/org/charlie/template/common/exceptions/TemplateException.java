@@ -1,4 +1,4 @@
-package org.charlie.template.common.exception;
+package org.charlie.template.common.exceptions;
 
 public class TemplateException extends Exception {
     public TemplateException(String msg) {

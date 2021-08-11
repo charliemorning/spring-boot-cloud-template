@@ -1,4 +1,4 @@
-package org.charlie.template.common.config;
+package org.charlie.template.common.configs;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
