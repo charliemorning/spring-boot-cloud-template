@@ -31,6 +31,7 @@ mybatis:
   mapper-locations: classpath:mapper/mysql/*.xml
   config-location: classpath:mybatis/mybatis-config.xml
 
-template:
+template: # FIXME: replace config name here
   thread-num: 10
+  idle-and-expire-connections-timeout-seconeds: 1
   redis-key-prefix: TEMPLATE_

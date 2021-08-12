@@ -107,21 +107,16 @@ public class HttpClientUtil {
                 .setConnectionManager(connManager)
                 .setConnectionManagerShared(true)
                 .build();
+    }
 
-        // TODO: move monitor to spring scheduler
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    connManager.closeExpiredConnections();
-                    log.info(connManager.getTotalStats().toString());
-                    connManager.closeIdleConnections(1, TimeUnit.SECONDS);
-                } catch (Throwable t) {
-                    t.printStackTrace();
-                }
-            }
-        }, 0 , 1000);
+    public static void closeIdleAndExpiredConnections(int idleTimeout, TimeUnit timeUnit) {
+        try {
+            connManager.closeExpiredConnections();
+            log.info(connManager.getTotalStats().toString());
+            connManager.closeIdleConnections(idleTimeout, timeUnit);
+        } catch (Throwable t) {
+            log.error(ExceptionUtils.getMessage(t));
+        }
     }
 
     public static CloseableHttpClient getHttpClient(int timeout) {

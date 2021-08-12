@@ -6,10 +6,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.WebApplicationInitializer;
 
 
-@MapperScan("org.charlie.template.dao")
+@Configuration
+@MapperScan("org.charlie.template.dao")  // FIXME: modify package name
+@EnableScheduling
+
 @SpringBootApplication
 public class TemplateApplication extends SpringBootServletInitializer implements WebApplicationInitializer {
     public static void main(String[] args) {
