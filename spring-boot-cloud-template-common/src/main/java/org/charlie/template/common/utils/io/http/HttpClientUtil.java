@@ -39,9 +39,9 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class HttpClientUtil {
 
-    private final static String POST_HEADER_KEY = "Content-type";
+    private final static String HEADER_KEY = "Content-type";
 
-    private final static String POST_HEADER_VALUE = "application/json; charset=utf-8";
+    private final static String HEADER_VALUE = "application/json; charset=utf-8";
 
     private final static String ENTITY_CHARSET = "UTF-8";
 
@@ -205,36 +205,34 @@ public class HttpClientUtil {
      * @throws JsonProcessingException
      */
     public static String request(String url, Map<String, Object> parameters, Method method, int timeout) throws JsonProcessingException {
+
         Preconditions.checkNotNull(url, "[url] is null.");
         Preconditions.checkState(checkUrl(url), String.format("[url:%s] is invalid.", url));
-
         Preconditions.checkNotNull(parameters, "[parameters] is null.");
-
         Preconditions.checkArgument(timeout > 0,
                 String.format("Negative [timeout:%s] is illegal.", String.valueOf(timeout)));
 
         String responseString = null;
         if (Method.GET.equals(method)) {
-            responseString = get(url, parameters, timeout);
+            responseString = get(url, parameters);
         } else if (Method.POST.equals(method)) {
-            responseString = post(url, parameters, timeout);
+            responseString = post(url, parameters);
         } else if (Method.PUT.equals(method)) {
-            // TODO: add implementation
+            responseString = put(url, parameters);
         } else if (Method.PATCH.equals(method)) {
-            // TODO: add implementation
+            responseString = patch(url, parameters);
         } else if (Method.DELETE.equals(method)) {
-            // TODO: add implementation
+            responseString = delete(url);
         } else {
-            // TODO: add implementation
+            throw new IllegalArgumentException(String.format("%s is not permitted.", String.valueOf(method)));
         }
         return responseString;
     }
 
-    private static String execute(HttpRequestBase requester, int timeout) {
+    private static String execute(HttpRequestBase requester) {
 
         String responseString = null;
         CloseableHttpResponse response = null;
-//        CloseableHttpClient httpClient = getHttpClient(timeout);
 
         try {
             response = httpClient.execute(requester);
@@ -265,22 +263,54 @@ public class HttpClientUtil {
         return responseString;
     }
 
-    private static String post(String url, Map<String, Object> parameters, int timeout) throws JsonProcessingException {
+    private static String post(String url, Map<String, Object> parameters) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         String paramJsonString = mapper.writeValueAsString(parameters);
-        return post(url, paramJsonString, timeout);
+        return post(url, paramJsonString);
     }
 
-    private static String post(String url, String paramJsonString, int timeout) {
+    private static String post(String url, String paramJsonString) {
         HttpPost httpPost = new HttpPost(url);
-        httpPost.setHeader(POST_HEADER_KEY, POST_HEADER_VALUE);
+        httpPost.setHeader(HEADER_KEY, HEADER_VALUE);
         httpPost.setEntity(new StringEntity(paramJsonString, ENTITY_CHARSET));
-        return execute(httpPost, timeout);
+        return execute(httpPost);
     }
 
-    private static String get(String url, Map<String, Object> parameters, int timeout) {
+    private static String get(String url, Map<String, Object> parameters) {
         String urlWithParam = concatParamToUrl(url, parameters);
         HttpGet httpGet = new HttpGet(urlWithParam);
-        return execute(httpGet, timeout);
+        return execute(httpGet);
+    }
+
+    private static String put(String url, Map<String, Object> parameters) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        String paramJsonString = mapper.writeValueAsString(parameters);
+        return put(url, paramJsonString);
+    }
+
+    private static String put(String url, String paramJsonString) {
+        HttpPut httpPut = new HttpPut(url);
+        httpPut.setHeader(HEADER_KEY, HEADER_VALUE);
+        httpPut.setEntity(new StringEntity(paramJsonString, ENTITY_CHARSET));
+        return execute(httpPut);
+    }
+
+    private static String patch(String url, Map<String, Object> parameters) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        String paramJsonString = mapper.writeValueAsString(parameters);
+        return patch(url, paramJsonString);
+    }
+
+    private static String patch(String url, String paramJsonString) {
+        HttpPatch httpPatch = new HttpPatch(url);
+        httpPatch.setHeader(HEADER_KEY, HEADER_VALUE);
+        httpPatch.setEntity(new StringEntity(paramJsonString, ENTITY_CHARSET));
+        return execute(httpPatch);
+    }
+
+    private static String delete(String url) {
+        HttpDelete httpDelete = new HttpDelete(url);
+        httpDelete.setHeader(HEADER_KEY, HEADER_VALUE);
+        return execute(httpDelete);
     }
 }
