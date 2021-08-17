@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
+/**
+ * @author Charlie
+ * add trace id in logs
+ */
 @Slf4j
 public class GlobalTraceIdInterceptorHandler implements HandlerInterceptor {
     @Override

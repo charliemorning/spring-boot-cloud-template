@@ -27,11 +27,15 @@ import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
 import java.io.InterruptedIOException;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author Charlie
+ */
+@Slf4j
 @Configuration
 @EnableScheduling
-@Slf4j
 public class ApacheHttpClientConfig {
 
     private TemplateConfig templateConfig;
@@ -49,7 +53,7 @@ public class ApacheHttpClientConfig {
         poolingConnectionManager.setDefaultConnectionConfig(
                 ConnectionConfig
                         .custom()
-                        .setCharset(HttpConstants.CHAR_SET)
+                        .setCharset(StandardCharsets.UTF_8)
                         .build()
         );
 //        HttpHost localhost = new HttpHost("http://localhost", 8080);
@@ -57,6 +61,10 @@ public class ApacheHttpClientConfig {
         return poolingConnectionManager;
     }
 
+    /**
+     * to define retry handler
+     * @return
+     */
     @Bean
     public HttpRequestRetryHandler httpRequestRetryHandler() {
 
@@ -88,9 +96,14 @@ public class ApacheHttpClientConfig {
         };
     }
 
+    /**
+     * to define keepalive strategy
+     * @return
+     */
     @Bean
     public ConnectionKeepAliveStrategy connectionKeepAliveStrategy() {
         return (httpResponse, httpContext) -> {
+            // to find the timeout value in response header
             HeaderIterator headerIterator = httpResponse.headerIterator(HTTP.CONN_KEEP_ALIVE);
             HeaderElementIterator elementIterator = new BasicHeaderElementIterator(headerIterator);
             while (elementIterator.hasNext()) {
@@ -109,11 +122,11 @@ public class ApacheHttpClientConfig {
     public Runnable idleConnectionMonitor(PoolingHttpClientConnectionManager pool) {
         return new Runnable() {
             @Override
-            @Scheduled(fixedDelay = 1000)
+            @Scheduled(fixedDelay = HttpConstants.IDEL_CONNECTION_CLOSE_INTERVAL * 1000)
             public void run() {
                 if (pool != null) {
                     pool.closeExpiredConnections();
-                    pool.closeIdleConnections(HttpConstants.IDLE_CONNECTION_WAIT_TIME, TimeUnit.MILLISECONDS);
+                    pool.closeIdleConnections(HttpConstants.IDEL_CONNECTION_WAIT_TIME, TimeUnit.MILLISECONDS);
                     log.info(String.valueOf(pool.getTotalStats()));
                 }
             }
@@ -123,12 +136,16 @@ public class ApacheHttpClientConfig {
     @Bean
     public TaskScheduler taskScheduler() {
         ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
-        scheduler.setThreadNamePrefix("idleMonitor");
-        scheduler.setPoolSize(5);
+        scheduler.setThreadNamePrefix(HttpConstants.IDEL_CONNECTION_MONITOR_THREAD_NAME);
+        scheduler.setPoolSize(HttpConstants.IDEL_CONNECTION_MONITOR_THREAD_NUM);
         return scheduler;
     }
 
 
+    /**
+     * to define http client
+     * @return
+     */
     @Bean
     public CloseableHttpClient httpClient() {
 
@@ -148,3 +165,4 @@ public class ApacheHttpClientConfig {
     }
 
 }
+

@@ -4,7 +4,12 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Builder;
 import lombok.Data;
 
-
+/**
+ * @author Charlie
+ * response entity for global exception handler
+ * not permitted to be used in controller
+ * @param <T>
+ */
 @Data
 @Builder
 public class ResponseEntity<T> {

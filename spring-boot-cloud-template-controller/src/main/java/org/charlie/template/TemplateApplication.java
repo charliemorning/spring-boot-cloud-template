@@ -13,7 +13,6 @@ import org.springframework.web.WebApplicationInitializer;
 @Configuration
 @MapperScan("org.charlie.template.dao")  // FIXME: modify package name
 @EnableScheduling
-
 @SpringBootApplication
 public class TemplateApplication extends SpringBootServletInitializer implements WebApplicationInitializer {
     public static void main(String[] args) {

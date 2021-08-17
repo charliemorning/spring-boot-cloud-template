@@ -9,6 +9,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+
+/**
+ * @author Charlie
+ * rest template configure based on Apache HTTP Client
+ */
 @Configuration
 public class RestTemplateConfig {
 
@@ -30,7 +35,7 @@ public class RestTemplateConfig {
     public RestTemplate restTemplate() {
         return new RestTemplateBuilder()
                 .requestFactory(this::clientHttpRequestFactory)
-                .errorHandler(new CustomClientErrorHandler())
+                .errorHandler(new CustomClientErrorHandler()) // define your error handler yourself
                 .interceptors(new CustomClientHttpRequestInterceptor())
                 .build();
     }
