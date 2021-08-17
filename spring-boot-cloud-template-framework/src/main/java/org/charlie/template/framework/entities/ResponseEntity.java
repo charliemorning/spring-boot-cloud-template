@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class Response<T> {
+public class ResponseEntity<T> {
 
     @JsonAlias("code")
     private String code;
