@@ -21,6 +21,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
+import org.charlie.template.framework.constants.io.http.HttpConstants;
 
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -40,43 +42,29 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class HttpClientUtil {
 
-    private final static String CONTENT_TYPE_JSON_VALUE = "application/json; charset=utf-8";
-
-    private final static String ENTITY_CHARSET = "UTF-8";
-
-    private static final Charset CHAR_SET = Charset.forName("utf-8");
-
-    private final static int HTTP_CLIENT_CONN_MANAGER_TTL = 60000;
-    private final static int HTTP_CLIENT_MAX_CONN = 200;
-    private final static int POOL_MANAGER_MAX_TOTAL_DEFAULT_CONNECTIONS = 200;
-    private final static int POOL_MANAGER_MAX_ROUTE_DEFAULT_CONNECTIONS = 100;
-
-    private final static int HTTP_CLIENT_MAX_PER_ROUTE = 100;
-    private final static int HTTP_CLIENT_TIMEOUT = 1000; // ms
-    private final static int HTTP_CLIENT_RETRY = 3;
-
     private static CloseableHttpClient httpClient;
 
-    private static final PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(HTTP_CLIENT_CONN_MANAGER_TTL,
-            TimeUnit.MILLISECONDS);
+    private static final PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(
+            HttpConstants.HTTP_CLIENT_CONN_MANAGER_TTL, TimeUnit.MILLISECONDS);
 
     static {
-        connManager.setMaxTotal(HTTP_CLIENT_MAX_CONN);
+        connManager.setMaxTotal(HttpConstants.POOL_MANAGER_MAX_TOTAL_DEFAULT_CONNECTIONS + 1);
         connManager.setDefaultConnectionConfig(
                 ConnectionConfig
                         .custom()
-                        .setCharset(CHAR_SET)
+                        .setCharset(StandardCharsets.UTF_8)
                         .build()
         );
-        connManager.setDefaultMaxPerRoute(HTTP_CLIENT_MAX_PER_ROUTE);
+        connManager.setDefaultMaxPerRoute(HttpConstants.POOL_MANAGER_MAX_ROUTE_DEFAULT_CONNECTIONS);
+
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectionRequestTimeout(HTTP_CLIENT_TIMEOUT) // 获取连接超时时间
-                .setConnectTimeout(HTTP_CLIENT_TIMEOUT) // 请求超时时间
-                .setSocketTimeout(HTTP_CLIENT_TIMEOUT) // 响应超时时间
+                .setConnectionRequestTimeout(HttpConstants.CONNECTION_TIMEOUT) // 获取连接超时时间
+                .setConnectTimeout(HttpConstants.REQUEST_TIMEOUT) // 请求超时时间
+                .setSocketTimeout(HttpConstants.SOCKET_TIMEOUT) // 响应超时时间
                 .build();
 
         HttpRequestRetryHandler retry = (exception, executionCount, context) -> {
-            if (executionCount >= HTTP_CLIENT_RETRY) {
+            if (executionCount >= HttpConstants.HTTP_CLIENT_RETRY) {
                 return false;
             }
             if (exception instanceof NoHttpResponseException) { // 如果服务器丢掉了连接
@@ -96,7 +84,6 @@ public class HttpClientUtil {
             }
             HttpClientContext clientContext = HttpClientContext.adapt(context);
             HttpRequest request = clientContext.getRequest();
-            // 如果请求是幂等的，就再次尝试
             if (!(request instanceof HttpEntityEnclosingRequest)) {
                 return true;
             }
@@ -111,66 +98,11 @@ public class HttpClientUtil {
                 .build();
     }
 
-    public static void closeIdleAndExpiredConnections(int idleTimeout, TimeUnit timeUnit) {
-        try {
-            connManager.closeExpiredConnections();
-            log.info(connManager.getTotalStats().toString());
-            connManager.closeIdleConnections(idleTimeout, timeUnit);
-        } catch (Throwable t) {
-            log.error(ExceptionUtils.getMessage(t));
-        }
-    }
+    public static void clearIdleAndExpiredConnections() {
+        connManager.closeExpiredConnections();
+        connManager.closeIdleConnections(HttpConstants.IDEL_CONNECTION_WAIT_TIME, TimeUnit.SECONDS);
+        log.info(connManager.getTotalStats().toString());
 
-    public static CloseableHttpClient getHttpClient(int timeout) {
-
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectionRequestTimeout(timeout) // 获取连接超时时间
-                .setConnectTimeout(timeout) // 请求超时时间
-                .setSocketTimeout(timeout) // 响应超时时间
-                .build();
-
-        HttpRequestRetryHandler retry = (exception, executionCount, context) -> {
-            if (executionCount >= HTTP_CLIENT_RETRY) {
-                return false;
-            }
-            if (exception instanceof NoHttpResponseException) { // 如果服务器丢掉了连接
-                return true;
-            }
-            if (exception instanceof SSLHandshakeException) { // SSL握手异常
-                return false;
-            }
-            if (exception instanceof InterruptedIOException) { // 超时
-                return true;
-            }
-            if (exception instanceof UnknownHostException) { // 目标服务器不可达
-                return false;
-            }
-            if (exception instanceof SSLException) { // ssl握手异常
-                return false;
-            }
-            HttpClientContext clientContext = HttpClientContext.adapt(context);
-            HttpRequest request = clientContext.getRequest();
-            // 如果请求是幂等的，就再次尝试
-            if (!(request instanceof HttpEntityEnclosingRequest)) {
-                return true;
-            }
-            return false;
-        };
-        return HttpClients.custom()
-                .setDefaultRequestConfig(requestConfig)
-                .setRetryHandler(retry)
-                .setConnectionManager(connManager)
-                .setConnectionManagerShared(true)
-                .build();
-
-    }
-
-    public static void clearIdleConnections() {
-        if (connManager != null) {
-            connManager.closeExpiredConnections();
-            log.info(connManager.getTotalStats().toString());
-            connManager.closeIdleConnections(1, TimeUnit.SECONDS);
-        }
     }
 
     public static boolean checkUrl(String url) {
@@ -244,17 +176,8 @@ public class HttpClientUtil {
             responseString = EntityUtils.toString(response.getEntity());
         } catch (IOException e) {
             log.error(ExceptionUtils.getMessage(e));
-            try {
-                httpClient.close();
-                httpClient = null;
-            } catch (IOException e2) {
-                log.error("Cannot close http client.");
-                log.error(ExceptionUtils.getMessage(e2));
-            }
         } finally {
-
             requester.releaseConnection();
-
             if (null != response) {
                 try {
                     response.close();
@@ -264,7 +187,6 @@ public class HttpClientUtil {
                 }
             }
         }
-
         return responseString;
     }
 
@@ -276,8 +198,8 @@ public class HttpClientUtil {
 
     private static String post(String url, String paramJsonString) {
         HttpPost httpPost = new HttpPost(url);
-        httpPost.setHeader(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE_JSON_VALUE);
-        httpPost.setEntity(new StringEntity(paramJsonString, ENTITY_CHARSET));
+        httpPost.setHeader(HttpHeaders.CONTENT_TYPE, HttpConstants.CONTENT_TYPE_JSON_VALUE);
+        httpPost.setEntity(new StringEntity(paramJsonString, HttpConstants.CHARSET_UTF8));
         return execute(httpPost);
     }
 
@@ -295,8 +217,8 @@ public class HttpClientUtil {
 
     private static String put(String url, String paramJsonString) {
         HttpPut httpPut = new HttpPut(url);
-        httpPut.setHeader(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE_JSON_VALUE);
-        httpPut.setEntity(new StringEntity(paramJsonString, ENTITY_CHARSET));
+        httpPut.setHeader(HttpHeaders.CONTENT_TYPE, HttpConstants.CONTENT_TYPE_JSON_VALUE);
+        httpPut.setEntity(new StringEntity(paramJsonString, HttpConstants.CHARSET_UTF8));
         return execute(httpPut);
     }
 
@@ -308,14 +230,14 @@ public class HttpClientUtil {
 
     private static String patch(String url, String paramJsonString) {
         HttpPatch httpPatch = new HttpPatch(url);
-        httpPatch.setHeader(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE_JSON_VALUE);
-        httpPatch.setEntity(new StringEntity(paramJsonString, ENTITY_CHARSET));
+        httpPatch.setHeader(HttpHeaders.CONTENT_TYPE, HttpConstants.CONTENT_TYPE_JSON_VALUE);
+        httpPatch.setEntity(new StringEntity(paramJsonString, HttpConstants.CHARSET_UTF8));
         return execute(httpPatch);
     }
 
     private static String delete(String url) {
         HttpDelete httpDelete = new HttpDelete(url);
-        httpDelete.setHeader(HttpHeaders.CONTENT_TYPE, CONTENT_TYPE_JSON_VALUE);
+        httpDelete.setHeader(HttpHeaders.CONTENT_TYPE, HttpConstants.CONTENT_TYPE_JSON_VALUE);
         return execute(httpDelete);
     }
 }
