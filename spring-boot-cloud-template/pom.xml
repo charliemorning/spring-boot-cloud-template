@@ -12,7 +12,7 @@
     <packaging>pom</packaging>
     <version>0.1.0</version>
     <modules>
-        <module>../spring-boot-cloud-template-common</module>
+        <module>../spring-boot-cloud-template-framework</module>
         <module>../spring-boot-cloud-template-dao</module>
         <module>../spring-boot-cloud-template-manager</module>
         <module>../spring-boot-cloud-template-service</module>

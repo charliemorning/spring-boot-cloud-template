@@ -4,7 +4,7 @@ package org.charlie.template.service.implement;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.charlie.template.bo.FooBO;
-import org.charlie.template.common.utils.bean.BeanUtil;
+import org.charlie.template.framework.utils.bean.BeanUtil;
 import org.charlie.template.dao.FooDAO;
 import org.charlie.template.po.FooPO;
 import org.charlie.template.service.FooService;
