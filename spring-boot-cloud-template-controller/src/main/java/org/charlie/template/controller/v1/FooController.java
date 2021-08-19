@@ -6,7 +6,7 @@ import com.google.common.collect.Lists;
 import org.charlie.template.bo.FooBO;
 import org.charlie.template.framework.utils.bean.BeanUtil;
 import org.charlie.template.service.FooService;
-import org.charlie.template.vo.FooVO;
+import org.charlie.template.entities.vo.FooVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
