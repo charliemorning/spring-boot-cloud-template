@@ -3,10 +3,9 @@ package org.charlie.template.framework.util.io.http;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
-import org.charlie.template.framework.utils.io.http.HttpClientUtil;
 import org.charlie.template.framework.utils.io.http.HttpClientUtil2;
 import org.charlie.template.framework.utils.io.http.Method;
-import org.charlie.template.framework.utils.thread.ThreadUtil;
+import org.charlie.template.framework.utils.thread.ThreadUtil2;
 import org.junit.Test;
 import org.junit.platform.commons.util.ExceptionUtils;
 import org.junit.runner.RunWith;
@@ -26,9 +25,12 @@ public class HttpClientUtil2Test {
     @Autowired
     private HttpClientUtil2 httpClientUtil;
 
+    @Autowired
+    private ThreadUtil2 threadUtil;
+
     private final static String MOCK_SERVER_ADDRESS = "http://127.0.0.1:9000";
 
-    private final static int THREAD_NUM = 100;
+    private final static int THREAD_NUM = 15;
 
     private final static int THREAD_SLEEP_TIME = 50; // this value should not be too small, in case of running out of connection
 
@@ -40,7 +42,7 @@ public class HttpClientUtil2Test {
         StopWatch watch = new StopWatch();
         watch.start();
         while (threadNum-- > 0) {
-            ThreadUtil.submit(() -> {
+            threadUtil.execute(() -> {
                 while (true) {
                     try {
                         httpClientUtil.request(MOCK_SERVER_ADDRESS, Method.GET, 1000);

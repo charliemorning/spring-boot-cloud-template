@@ -27,6 +27,7 @@ public class HttpClientUtilTest {
 
     private final static int THREAD_SLEEP_TIME = 50; // this value should not be too small, in case of running out of connection
 
+
     @Test
     public void postTest() throws JsonProcessingException {
 
@@ -35,7 +36,7 @@ public class HttpClientUtilTest {
         StopWatch watch = new StopWatch();
         watch.start();
         while (threadNum-- > 0) {
-            ThreadUtil.submit(() -> {
+            ThreadUtil.execute(() -> {
                 while (true) {
                     try {
                         HttpClientUtil.request(MOCK_SERVER_ADDRESS, Method.GET, 1000);
