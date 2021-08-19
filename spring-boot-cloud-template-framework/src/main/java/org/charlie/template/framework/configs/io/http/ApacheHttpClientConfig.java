@@ -45,6 +45,11 @@ public class ApacheHttpClientConfig {
         this.templateConfig = templateConfig;
     }
 
+
+    /**
+     * to config pooled connection manager
+     * @return
+     */
     @Bean
     public PoolingHttpClientConnectionManager poolingHttpClientConnectionManager() {
         PoolingHttpClientConnectionManager poolingConnectionManager = new PoolingHttpClientConnectionManager(HttpConstants.HTTP_CLIENT_CONN_MANAGER_TTL, TimeUnit.MILLISECONDS);
@@ -56,6 +61,8 @@ public class ApacheHttpClientConfig {
                         .setCharset(StandardCharsets.UTF_8)
                         .build()
         );
+
+        // TODO: control max connection per route
 //        HttpHost localhost = new HttpHost("http://localhost", 8080);
 //        poolingConnectionManager.setMaxPerRoute(new HttpRoute(localhost), MAX_LOCALHOST_CONNECTIONS);
         return poolingConnectionManager;
@@ -122,11 +129,11 @@ public class ApacheHttpClientConfig {
     public Runnable idleConnectionMonitor(PoolingHttpClientConnectionManager pool) {
         return new Runnable() {
             @Override
-            @Scheduled(fixedDelay = HttpConstants.IDEL_CONNECTION_CLOSE_INTERVAL * 1000)
+            @Scheduled(fixedDelay = HttpConstants.IDLE_CONNECTION_CLOSE_INTERVAL * 1000)
             public void run() {
                 if (pool != null) {
                     pool.closeExpiredConnections();
-                    pool.closeIdleConnections(HttpConstants.IDEL_CONNECTION_WAIT_TIME, TimeUnit.MILLISECONDS);
+                    pool.closeIdleConnections(HttpConstants.IDLE_CONNECTION_WAIT_SECOND, TimeUnit.MILLISECONDS);
                     log.info(String.valueOf(pool.getTotalStats()));
                 }
             }
@@ -136,8 +143,8 @@ public class ApacheHttpClientConfig {
     @Bean
     public TaskScheduler taskScheduler() {
         ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
-        scheduler.setThreadNamePrefix(HttpConstants.IDEL_CONNECTION_MONITOR_THREAD_NAME);
-        scheduler.setPoolSize(HttpConstants.IDEL_CONNECTION_MONITOR_THREAD_NUM);
+        scheduler.setThreadNamePrefix(HttpConstants.IDLE_CONNECTION_MONITOR_THREAD_NAME);
+        scheduler.setPoolSize(HttpConstants.IDLE_CONNECTION_MONITOR_THREAD_NUM);
         return scheduler;
     }
 
