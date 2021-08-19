@@ -1,4 +1,4 @@
-package org.charlie.template.vo;
+package org.charlie.template.entities.vo;
 
 
 import com.fasterxml.jackson.annotation.JsonAlias;
