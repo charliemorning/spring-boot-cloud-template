@@ -29,10 +29,10 @@ public class HttpConstants {
 
     // Idle connection monitor
 
-    public final static String IDEL_CONNECTION_MONITOR_THREAD_NAME = "idel-monitor";
-    public final static int IDEL_CONNECTION_MONITOR_THREAD_NUM = 5;
+    public final static String IDLE_CONNECTION_MONITOR_THREAD_NAME = "idle-conn-mon";
+    public final static int IDLE_CONNECTION_MONITOR_THREAD_NUM = 3;
 
-    public final static int IDEL_CONNECTION_WAIT_TIME = 1 * 1000; // 5 sec
+    public final static int IDLE_CONNECTION_WAIT_SECOND = 1 * 1000;
 
-    public final static int IDEL_CONNECTION_CLOSE_INTERVAL = 1;
+    public final static int IDLE_CONNECTION_CLOSE_INTERVAL = 1;
 }
