@@ -1,4 +1,4 @@
-package org.charlie.template.framework.interceptors;
+package org.charlie.template.framework.interceptors.httpclient;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
