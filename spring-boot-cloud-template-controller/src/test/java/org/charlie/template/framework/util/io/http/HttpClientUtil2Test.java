@@ -8,37 +8,45 @@ import org.charlie.template.framework.utils.io.http.HttpClientUtil2;
 import org.charlie.template.framework.utils.io.http.Method;
 import org.charlie.template.framework.utils.thread.ThreadUtil;
 import org.junit.Test;
+import org.junit.platform.commons.util.ExceptionUtils;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.StopWatch;
 
+/**
+ * use multi-thread to test HttpClientUtil2
+ */
 @Slf4j
-@RunWith(SpringRunner.class)
+@RunWith(SpringRunner.class) // start with springboot
 @SpringBootTest
 public class HttpClientUtil2Test {
 
     @Autowired
     private HttpClientUtil2 httpClientUtil;
 
+    private final static String MOCK_SERVER_ADDRESS = "http://127.0.0.1:9000";
+
+    private final static int THREAD_NUM = 100;
+
+    private final static int THREAD_SLEEP_TIME = 50; // this value should not be too small, in case of running out of connection
+
     @Test
-    public void testHttpClient() {
+    public void postTest() {
+
         log.info("start test");
-        int postCount = 5;
+        int threadNum = THREAD_NUM;
         StopWatch watch = new StopWatch();
         watch.start();
-        while (postCount-- > 0) {
-            ThreadUtil.submit(new Runnable() {
-                @Override
-                public void run() {
-                    while (true) {
-                        try {
-                            httpClientUtil.request("http://127.0.0.1:9000", Method.GET, 1000);
-                            Thread.sleep(50);
-                        } catch (JsonProcessingException | InterruptedException e) {
-                            e.printStackTrace();
-                        }
+        while (threadNum-- > 0) {
+            ThreadUtil.submit(() -> {
+                while (true) {
+                    try {
+                        httpClientUtil.request(MOCK_SERVER_ADDRESS, Method.GET, 1000);
+                        Thread.sleep(THREAD_SLEEP_TIME);
+                    } catch (JsonProcessingException | InterruptedException e) {
+                        log.info(ExceptionUtils.readStackTrace(e));
                     }
                 }
             });
@@ -46,6 +54,6 @@ public class HttpClientUtil2Test {
         watch.stop();
         log.info("end");
         log.info(watch.prettyPrint());
-        for (;;);
+        for (; ; ) ;
     }
 }
