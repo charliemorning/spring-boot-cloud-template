@@ -11,8 +11,9 @@ import org.springframework.web.client.RestTemplate;
 
 
 /**
+ * Rest template configure based on Apache HTTP Client
+ *
  * @author Charlie
- * rest template configure based on Apache HTTP Client
  */
 @Configuration
 public class RestTemplateConfig {
@@ -39,5 +40,4 @@ public class RestTemplateConfig {
                 .interceptors(new CustomClientHttpRequestInterceptor())
                 .build();
     }
-
 }

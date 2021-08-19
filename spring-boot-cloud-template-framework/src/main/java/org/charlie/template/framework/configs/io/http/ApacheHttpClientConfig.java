@@ -31,6 +31,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * To configure apache http client.
+ *
  * @author Charlie
  */
 @Slf4j
@@ -134,6 +136,18 @@ public class ApacheHttpClientConfig {
                 if (pool != null) {
                     pool.closeExpiredConnections();
                     pool.closeIdleConnections(HttpConstants.IDLE_CONNECTION_WAIT_SECOND, TimeUnit.MILLISECONDS);
+                }
+            }
+        };
+    }
+
+    @Bean
+    public Runnable connectionMonitor(PoolingHttpClientConnectionManager pool) {
+        return new Runnable() {
+            @Override
+            @Scheduled(fixedDelay = HttpConstants.CONNECTION_MONITOR_INTERVAL * 1000)
+            public void run() {
+                if (pool != null) {
                     log.info(String.valueOf(pool.getTotalStats()));
                 }
             }

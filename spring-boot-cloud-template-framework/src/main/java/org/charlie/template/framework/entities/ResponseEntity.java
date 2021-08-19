@@ -5,9 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * @author Charlie
  * response entity for global exception handler
  * not permitted to be used in controller
+ * @author Charlie
  * @param <T>
  */
 @Data

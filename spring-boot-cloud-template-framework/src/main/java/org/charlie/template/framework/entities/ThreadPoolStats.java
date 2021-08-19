@@ -5,6 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
+
+/**
+ * Class to hold thread pool statistics.
+ *
+ * @author Charlie
+ */
 @Data
 @ToString
 @Builder

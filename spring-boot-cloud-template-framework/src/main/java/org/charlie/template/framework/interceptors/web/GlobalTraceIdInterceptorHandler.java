@@ -10,15 +10,17 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /**
+ * To add trace id in logs.
+ *
  * @author Charlie
- * add trace id in logs
  */
 @Slf4j
 public class GlobalTraceIdInterceptorHandler implements HandlerInterceptor {
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String traceId = request.getHeader(TemplateConstants.TRACE_ID_HEADER_KEY);
-        log.info(String.format("Trace ID: %s", traceId));
+        log.debug(String.format("Trace ID: %s", traceId));
         MDC.put(TemplateConstants.TRACE_ID_HEADER_KEY, String.valueOf(traceId));
         return true;
     }

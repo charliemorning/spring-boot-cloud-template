@@ -20,6 +20,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.pool.PoolStats;
 import org.apache.http.util.EntityUtils;
 import org.charlie.template.framework.constants.io.http.HttpConstants;
 
@@ -34,6 +35,8 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
+ * To implement simple http method in pooling connection manager.
+ *
  * @author Charlie
  */
 @Slf4j
@@ -99,7 +102,10 @@ public class HttpClientUtil {
         connManager.closeExpiredConnections();
         connManager.closeIdleConnections(HttpConstants.IDLE_CONNECTION_WAIT_SECOND, TimeUnit.SECONDS);
         log.info(connManager.getTotalStats().toString());
+    }
 
+    public static PoolStats stat() {
+        return connManager.getTotalStats();
     }
 
     public static boolean checkUrl(String url) {

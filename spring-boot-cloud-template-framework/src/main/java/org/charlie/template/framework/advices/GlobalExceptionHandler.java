@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
+ * To catch exceptions globally.
+ *
  * @author Charlie
  */
 @RestControllerAdvice(annotations=RestController.class)
@@ -55,7 +57,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {HttpMessageNotReadableException.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity httpMessageNotReadableException(Exception ex) {
-        log.info("Transaction Message Reader Error:" + HttpStatus.INTERNAL_SERVER_ERROR, ex);
+        log.error("Transaction Message Reader Error:" + HttpStatus.INTERNAL_SERVER_ERROR, ex);
         log.error(ExceptionUtils.getStackTrace(ex));
         return ResponseEntity.builder()
                 .code(ErrorConstants.ERROR_CODE)
@@ -66,7 +68,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {Throwable.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity unknownThrowable(Throwable t) {
-        log.info("Unknown error:" + HttpStatus.INTERNAL_SERVER_ERROR, t);
+        log.error("Unknown error:" + HttpStatus.INTERNAL_SERVER_ERROR, t);
         return ResponseEntity.builder()
                 .code(ErrorConstants.ERROR_CODE)
                 .message(ErrorConstants.ERROR_MESSAGE)

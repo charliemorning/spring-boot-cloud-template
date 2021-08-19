@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**
+ *
+ */
 @Slf4j
 @Component
 public class HttpClientUtil2 {
@@ -43,7 +46,6 @@ public class HttpClientUtil2 {
         connManager.closeExpiredConnections();
         connManager.closeIdleConnections(HttpConstants.IDLE_CONNECTION_WAIT_SECOND, TimeUnit.SECONDS);
         log.info(connManager.getTotalStats().toString());
-
     }
 
     public static boolean checkUrl(String url) {

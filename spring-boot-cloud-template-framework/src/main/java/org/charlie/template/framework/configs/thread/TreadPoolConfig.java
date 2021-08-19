@@ -12,14 +12,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.util.Objects;
 import java.util.concurrent.*;
 
+
+/**
+ * To define thread pool executor.
+ *
+ * @author Charlie
+ */
 @Slf4j
 @Configuration
 @EnableScheduling
 public class TreadPoolConfig {
-
-
 
     private TemplateConfig templateConfig;
 
@@ -28,16 +33,28 @@ public class TreadPoolConfig {
         this.templateConfig = templateConfig;
     }
 
+    /**
+     * To configure RejectedExecutionHandler
+     * @return
+     */
     @Bean
     public RejectedExecutionHandler rejectPolicy() {
         return new ThreadPoolExecutor.AbortPolicy();
     }
 
+    /**
+     *
+     * @return
+     */
     @Bean
     public BlockingQueue<Runnable> blockingQueue() {
         return new SynchronousQueue<>();
     }
 
+    /**
+     * configure ThreadPoolExecutor
+     * @return
+     */
     @Bean
     public ThreadPoolExecutor threadPoolExecutor() {
 
@@ -50,9 +67,12 @@ public class TreadPoolConfig {
                 threadFactory(),
                 rejectPolicy()
                 );
-
     }
 
+    /**
+     * To configure a thread factory.
+     * @return
+     */
     @Bean
     public ThreadFactory threadFactory() {
         return new ThreadFactoryBuilder()
@@ -61,13 +81,20 @@ public class TreadPoolConfig {
                 .build();
     }
 
+    /**
+     * To configure a thread factory.
+     * @return
+     */
     @Bean
     public Runnable threadPoolMonitor(ThreadPoolExecutor threadPoolExecutor) {
         return new Runnable() {
             @Scheduled(fixedDelay = ThreadConstants.THREAD_POOL_MONITOR_MS_INTERVAL * 1000)
             @Override
             public void run() {
-                log.info(String.valueOf(ThreadPoolMonitorUtil.stat(threadPoolExecutor)));
+                // Monitor thread pool statistics
+                if (Objects.nonNull(threadPoolExecutor)) {
+                    log.info(String.valueOf(ThreadPoolMonitorUtil.stat(threadPoolExecutor)));
+                }
             }
         };
     }

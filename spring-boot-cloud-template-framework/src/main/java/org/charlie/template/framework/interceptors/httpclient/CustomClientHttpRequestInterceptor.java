@@ -8,16 +8,20 @@ import org.springframework.http.client.ClientHttpResponse;
 
 import java.io.IOException;
 
+
+/**
+ * To implement apache http client request interceptor.
+ * <p>
+ * Delete this class if it is not necessary.
+ *
+ * @author Charlie
+ */
 @Slf4j
 public class CustomClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
-  @Override
-  public ClientHttpResponse intercept(HttpRequest request, byte[] bytes, ClientHttpRequestExecution execution) throws IOException {
-    // log the http request
-    log.info("URI: {}", request.getURI());
-    log.info("HTTP Method: {}", request.getMethodValue());
-    log.info("HTTP Headers: {}", request.getHeaders());
-
-    return execution.execute(request, bytes);
-  }
+    @Override
+    public ClientHttpResponse intercept(HttpRequest request, byte[] bytes, ClientHttpRequestExecution execution) throws IOException {
+        //
+        return execution.execute(request, bytes);
+    }
 }

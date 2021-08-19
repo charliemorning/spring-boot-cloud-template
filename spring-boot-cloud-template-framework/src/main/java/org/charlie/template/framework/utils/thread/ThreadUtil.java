@@ -1,27 +1,37 @@
 package org.charlie.template.framework.utils.thread;
 
 import lombok.extern.slf4j.Slf4j;
+import org.charlie.template.framework.constants.thread.ThreadConstants;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
-
+/**
+ * To define a utility class with static ThreadPoolExecutor.
+ * <p>
+ * Delete this class if using <class>org.charlie.template.framework.utils.thread.ThreadUtil2</class>..
+ *
+ * @author Charlie
+ */
 @Slf4j
 public class ThreadUtil {
 
-    private final static int DEFAULT_THREAD_COUNT = 200;
-
-    private static ExecutorService executorService;
+    private static ThreadPoolExecutor threadPoolExecutor;
 
     static {
-        executorService = Executors.newFixedThreadPool(DEFAULT_THREAD_COUNT);
+        threadPoolExecutor = new ThreadPoolExecutor(
+                ThreadConstants.THREAD_POOL_DEFAULT_NUM,
+                ThreadConstants.THREAD_POOL_DEFAULT_MAX_NUM,
+                ThreadConstants.THREAD_KEEP_ALIVE_SECOND,
+                TimeUnit.SECONDS,
+                new SynchronousQueue<>()
+        );
     }
 
-    public static void run(Runnable t) {
-        executorService.execute(t);
+    public static void execute(Runnable t) {
+        threadPoolExecutor.execute(t);
     }
 
-    public static void submit(Runnable t) {
-        executorService.submit(t);
+    public static void remove(Runnable t) {
+        threadPoolExecutor.remove(t);
     }
 }

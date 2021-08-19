@@ -8,8 +8,9 @@ import java.io.IOException;
 
 
 /**
- * @author Charlie
  * http client response error handler
+ *
+ * @author Charlie
  */
 @Slf4j
 public class CustomClientErrorHandler implements ResponseErrorHandler {

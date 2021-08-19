@@ -2,7 +2,11 @@ package org.charlie.template.framework.constants;
 
 
 /**
- * define error code and message
+ * To define error code and message.
+ *
+ * Not design well yet.
+ *
+ * @author Charlie
  */
 public class ErrorConstants {
 

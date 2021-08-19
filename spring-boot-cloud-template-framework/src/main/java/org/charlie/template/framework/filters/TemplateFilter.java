@@ -7,6 +7,14 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import java.io.IOException;
 
+
+/**
+ * Filter with nothing to do.
+ *
+ * FIXME: delete this class if it is not necessary.
+ *
+ * @author Charlie
+ */
 @Component
 @WebServlet(urlPatterns = "/**")
 @Slf4j

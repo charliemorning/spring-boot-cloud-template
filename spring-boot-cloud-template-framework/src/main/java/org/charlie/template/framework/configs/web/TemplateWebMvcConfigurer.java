@@ -9,6 +9,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 /**
+ * To register interceptors.
+ *
+ * FIXME: remove unnecessary interceptors.
+ *
  * @author Charie
  */
 @Configuration
