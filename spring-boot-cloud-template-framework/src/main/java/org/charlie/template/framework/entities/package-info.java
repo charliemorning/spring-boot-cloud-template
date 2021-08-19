@@ -1,0 +1,1 @@
+package org.charlie.template.framework.entities;
