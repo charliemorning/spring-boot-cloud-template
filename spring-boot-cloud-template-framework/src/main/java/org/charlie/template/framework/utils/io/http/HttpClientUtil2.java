@@ -41,7 +41,7 @@ public class HttpClientUtil2 {
 
     public void clearIdleAndExpiredConnections() {
         connManager.closeExpiredConnections();
-        connManager.closeIdleConnections(HttpConstants.IDEL_CONNECTION_WAIT_TIME, TimeUnit.SECONDS);
+        connManager.closeIdleConnections(HttpConstants.IDLE_CONNECTION_WAIT_SECOND, TimeUnit.SECONDS);
         log.info(connManager.getTotalStats().toString());
 
     }

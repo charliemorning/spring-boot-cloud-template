@@ -28,11 +28,8 @@ import javax.net.ssl.SSLHandshakeException;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.UnknownHostException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 
@@ -100,7 +97,7 @@ public class HttpClientUtil {
 
     public static void clearIdleAndExpiredConnections() {
         connManager.closeExpiredConnections();
-        connManager.closeIdleConnections(HttpConstants.IDEL_CONNECTION_WAIT_TIME, TimeUnit.SECONDS);
+        connManager.closeIdleConnections(HttpConstants.IDLE_CONNECTION_WAIT_SECOND, TimeUnit.SECONDS);
         log.info(connManager.getTotalStats().toString());
 
     }

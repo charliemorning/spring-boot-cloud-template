@@ -1,7 +1,7 @@
 package org.charlie.template.framework.configs.io.http;
 
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.charlie.template.framework.interceptors.CustomClientHttpRequestInterceptor;
+import org.charlie.template.framework.interceptors.httpclient.CustomClientHttpRequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
