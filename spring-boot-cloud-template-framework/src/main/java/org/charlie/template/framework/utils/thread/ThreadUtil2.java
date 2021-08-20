@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -17,18 +19,18 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Component
 public class ThreadUtil2 {
 
-    private ThreadPoolExecutor threadPoolExecutor;
+    private ExecutorService executorService;
 
     @Autowired
-    public void setThreadPoolExecutor(ThreadPoolExecutor threadPoolExecutor) {
-        this.threadPoolExecutor = threadPoolExecutor;
+    public void setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
     }
 
     public void execute(Runnable t) {
-        threadPoolExecutor.execute(t);
+        executorService.execute(t);
     }
 
-    public void remove(Runnable t) {
-        threadPoolExecutor.remove(t);
+    public Future submit(Runnable t) {
+        return executorService.submit(t);
     }
 }

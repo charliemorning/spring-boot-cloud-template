@@ -24,7 +24,7 @@ import java.util.concurrent.*;
 @Slf4j
 @Configuration
 @EnableScheduling
-public class TreadPoolConfig {
+public class ExecutorServiceConfig {
 
     private TemplateConfig templateConfig;
 
@@ -56,7 +56,7 @@ public class TreadPoolConfig {
      * @return
      */
     @Bean
-    public ThreadPoolExecutor threadPoolExecutor() {
+    public ExecutorService threadPoolExecutor() {
 
         return new ThreadPoolExecutor(
                 ThreadConstants.THREAD_POOL_DEFAULT_NUM,
@@ -71,6 +71,8 @@ public class TreadPoolConfig {
 
     /**
      * To configure a thread factory.
+     * Rename thread in pool.
+     *
      * @return
      */
     @Bean
@@ -82,18 +84,20 @@ public class TreadPoolConfig {
     }
 
     /**
-     * To configure a thread factory.
-     * @return
+     * To configure a thread pool monitor.
+     * Log the thread pool statistics.
+     *
+     * @return a runnable executed in fixed rate scheduled by Spring Scheduler.
      */
     @Bean
-    public Runnable threadPoolMonitor(ThreadPoolExecutor threadPoolExecutor) {
+    public Runnable threadPoolMonitor(ExecutorService executorService) {
         return new Runnable() {
             @Scheduled(fixedDelay = ThreadConstants.THREAD_POOL_MONITOR_MS_INTERVAL * 1000)
             @Override
             public void run() {
                 // Monitor thread pool statistics
-                if (Objects.nonNull(threadPoolExecutor)) {
-                    log.info(String.valueOf(ThreadPoolMonitorUtil.stat(threadPoolExecutor)));
+                if (Objects.nonNull(executorService)) {
+                    log.info(String.valueOf(ThreadPoolMonitorUtil.stat(executorService)));
                 }
             }
         };

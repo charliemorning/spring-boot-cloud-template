@@ -19,6 +19,6 @@ import static org.charlie.template.framework.utils.io.http.HttpClientUtil.stat;
 public class HttpClientConnectionMonitor {
     @Scheduled(fixedRate = HttpConstants.IDLE_CONNECTION_CLOSE_INTERVAL * 1000)
     public void run() {
-        log.info(String.valueOf(stat()));
+        log.info(String.format(String.valueOf(stat())));
     }
 }
