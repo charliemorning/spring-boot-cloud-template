@@ -3,14 +3,14 @@ Appenders:
     name: CONSOLE
     target: SYSTEM_OUT
     PatternLayout:
-      pattern: "[%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p][%t][::GlobalTraceID=%X{global_trace_id}::] %F:%L - %m%n"
+      pattern: "[%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p][%t][GlobalTraceID=%X{globalTraceId}] %F:%L - %m%n"
   RollingFile:
     - name: COMMON
       ignoreExceptions: false
       fileName: /tmp/logs/template_out.log
       filePattern: "/tmp/logs/template_out-%d{yyyy-MM-dd}-%i.log.gz"
       PatternLayout:
-        pattern: "[%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p][%t][::GlobalTraceID=%X{global_trace_id}::] %F:%L - %m%n"
+        pattern: "[%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p][%t][GlobalTraceID=%X{globalTraceId}] %F:%L - %m%n"
       Policies:
         SizeBasedTriggeringPolicy:
           size: "256 MB"
@@ -26,7 +26,7 @@ Appenders:
             onMatch: ACCEPT
             onMismatch: DENY
       PatternLayout:
-        pattern: "[%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p][%t][::GlobalTraceID=%X{global_trace_id}::] %F:%L - %m%n"
+        pattern: "[%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p][%t][GlobalTraceID=%X{globalTraceId}] %F:%L - %m%n"
       Policies:
         SizeBasedTriggeringPolicy:
           size: "256 MB"
