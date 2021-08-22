@@ -15,6 +15,12 @@ import org.springframework.web.WebApplicationInitializer;
 @EnableScheduling
 @SpringBootApplication
 public class TemplateApplication extends SpringBootServletInitializer implements WebApplicationInitializer {
+
+    // To make sure child thread can inherit context from its parent.
+    static {
+        System.setProperty("log4j2.isThreadContextMapInheritable", "true");
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(TemplateApplication.class, args);
     }
