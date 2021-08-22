@@ -31,6 +31,48 @@ mybatis:
   mapper-locations: classpath:mapper/mysql/*.xml
   config-location: classpath:mybatis/mybatis-config.xml
 
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/
+    enabled: true
+    registry-fetch-interval-seconds: 30
+  instance:
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+    metadata-map:
+      zone: chengdu
+    hostname: localhost
+    prefer-ip-address: false
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 2000 # unit: ms
+        readTimeout: 2000 # unit: ms
+        loggerLevel: full # 日志级别
+        errorDecoder: org.charlie.template.framework.configs.io.feign.CustomErrorDecoder
+#        retryer: com.example.SimpleRetryer
+        requestInterceptors:
+          - org.charlie.template.framework.interceptors.feign.GlobalTraceIdRequestInterceptor
+        # 是否对404错误解码
+        decode404: false
+#        encode: com.example.SimpleEncoder
+#        decoder: com.example.SimpleDecoder
+#        contract: com.example.SimpleContract
+
+  compression:
+    request:
+      enabled: true
+      mime-types: text/xml,application/xml,application/json
+      min-request-size: 2048
+    response:
+      enabled: true
+
+# application configure
 template: # FIXME: replace config name here
   thread-num: 10
   idle-and-expire-connections-timeout-seconeds: 1
