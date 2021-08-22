@@ -10,7 +10,7 @@ import java.io.IOException;
 
 
 /**
- * To implement apache http client request interceptor.
+ * To implement apache http client request interceptor for rest template.
  * <p>
  * Delete this class if it is not necessary.
  *

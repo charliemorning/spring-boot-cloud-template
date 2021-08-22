@@ -20,5 +20,5 @@ public class ThreadConstants {
     public final static String THREAD_NAME_FORMAT = "framework-pool-%d";
 
     // FIXME: please modify to proper value
-    public final static int THREAD_POOL_MONITOR_MS_INTERVAL = 1; // unit: ms
+    public final static int THREAD_POOL_MONITOR_MS_INTERVAL = 60; // unit: s
 }

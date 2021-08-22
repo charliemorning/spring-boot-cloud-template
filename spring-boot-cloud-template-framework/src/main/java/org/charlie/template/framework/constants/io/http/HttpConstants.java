@@ -40,8 +40,8 @@ public class HttpConstants {
     public final static int IDLE_CONNECTION_WAIT_SECOND = 1 * 1000; // unit: ms
 
     // FIXME: please modify to proper value.
-    public final static int IDLE_CONNECTION_CLOSE_INTERVAL = 1; // unit: second
+    public final static int IDLE_CONNECTION_CLOSE_INTERVAL = 60; // unit: second
 
     // FIXME: please modify to proper value.
-    public final static int CONNECTION_MONITOR_INTERVAL = 1; // unit: second
+    public final static int CONNECTION_MONITOR_INTERVAL = 60; // unit: second
 }
