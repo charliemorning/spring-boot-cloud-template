@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value={TemplateException.class})
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity templateException(TemplateException ex) {
-        log.error(String.format("TemplateException: %s", ExceptionUtils.getMessage(ex)));
+        log.error(String.format("Application Exception: %s", ExceptionUtils.getMessage(ex)));
         log.error(ExceptionUtils.getStackTrace(ex));
         return ResponseEntity.builder()
                 .code(ErrorConstants.ERROR_CODE)
@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value={IllegalArgumentException.class})
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity illegalArgumentException(IllegalArgumentException ex) {
         log.error(ExceptionUtils.getStackTrace(ex));
         return ResponseEntity.builder()
@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {Exception.class})
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity unknownException(Exception ex) {
         log.error(String.format("Unknown exception: %s", ExceptionUtils.getMessage(ex)));
         log.error(ExceptionUtils.getStackTrace(ex));
@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {HttpMessageNotReadableException.class})
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity httpMessageNotReadableException(Exception ex) {
         log.error("Transaction Message Reader Error:" + HttpStatus.INTERNAL_SERVER_ERROR, ex);
         log.error(ExceptionUtils.getStackTrace(ex));
@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {Throwable.class})
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity unknownThrowable(Throwable t) {
         log.error("Unknown error:" + HttpStatus.INTERNAL_SERVER_ERROR, t);
         return ResponseEntity.builder()
