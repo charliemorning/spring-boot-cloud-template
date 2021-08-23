@@ -35,7 +35,7 @@ public class ExecutorServiceConfig {
 
     /**
      * To configure RejectedExecutionHandler
-     * @return
+     * @return policy instance when thread execution is rejected
      */
     @Bean
     public RejectedExecutionHandler rejectPolicy() {
