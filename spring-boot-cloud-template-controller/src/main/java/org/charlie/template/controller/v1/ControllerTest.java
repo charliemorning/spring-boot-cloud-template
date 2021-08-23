@@ -1,6 +1,7 @@
 package org.charlie.template.controller.v1;
 
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.charlie.template.service.RequestServiceTest;
 import org.charlie.template.service.ThreadServiceTest;
@@ -46,6 +47,16 @@ public class ControllerTest {
     public String testChildThreadTraceId() {
         threadServiceTest.childThreadLog();
         return "";
+    }
+
+    @GetMapping("/fallback")
+    @HystrixCommand(fallbackMethod = "getFallbackInfo")
+    public String fallbackTest() {
+        return "test if fallback.";
+    }
+
+    public String getFallbackInfo(){
+        return "fallback.";
     }
 
 
