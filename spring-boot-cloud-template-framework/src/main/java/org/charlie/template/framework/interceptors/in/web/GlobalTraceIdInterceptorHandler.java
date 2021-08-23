@@ -1,4 +1,4 @@
-package org.charlie.template.framework.interceptors.web;
+package org.charlie.template.framework.interceptors.in.web;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

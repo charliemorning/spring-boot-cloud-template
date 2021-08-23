@@ -2,9 +2,9 @@ package org.charlie.template.framework.util.io.http;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
-import org.charlie.template.framework.utils.io.http.HttpClientUtil;
+import org.charlie.template.framework.utils.io.http.HttpClientStaticUtil;
 import org.charlie.template.framework.utils.io.http.Method;
-import org.charlie.template.framework.utils.thread.ThreadUtil;
+import org.charlie.template.framework.utils.thread.ThreadStaticUtil;
 import org.junit.Test;
 import org.junit.platform.commons.util.ExceptionUtils;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import org.springframework.util.StopWatch;
 @Slf4j
 @RunWith(SpringRunner.class) // start with springboot
 @SpringBootTest
-public class HttpClientUtilTest {
+public class HttpClientStaticUtilTest {
 
     private final static String MOCK_SERVER_ADDRESS = "http://127.0.0.1:9000";
 
@@ -36,10 +36,10 @@ public class HttpClientUtilTest {
         StopWatch watch = new StopWatch();
         watch.start();
         while (threadNum-- > 0) {
-            ThreadUtil.execute(() -> {
+            ThreadStaticUtil.execute(() -> {
                 while (true) {
                     try {
-                        HttpClientUtil.request(MOCK_SERVER_ADDRESS, Method.GET, 1000);
+                        HttpClientStaticUtil.request(MOCK_SERVER_ADDRESS, Method.GET, 1000);
                         Thread.sleep(THREAD_SLEEP_TIME);
                     } catch (JsonProcessingException | InterruptedException e) {
                         log.info(ExceptionUtils.readStackTrace(e));

@@ -1,4 +1,4 @@
-package org.charlie.template.framework.interceptors.web;
+package org.charlie.template.framework.interceptors.in.web;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Charlie
  */
 @Slf4j
-public class TemplateInterceptorHandler implements HandlerInterceptor {
+public class CustomWebInterceptorHandler implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

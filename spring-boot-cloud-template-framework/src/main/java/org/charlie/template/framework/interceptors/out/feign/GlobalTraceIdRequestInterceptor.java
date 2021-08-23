@@ -1,4 +1,4 @@
-package org.charlie.template.framework.interceptors.feign;
+package org.charlie.template.framework.interceptors.out.feign;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;

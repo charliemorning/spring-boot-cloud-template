@@ -1,4 +1,4 @@
-package org.charlie.template.framework.interceptors.httpclient;
+package org.charlie.template.framework.interceptors.out.resttemplate;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
@@ -21,7 +21,14 @@ public class CustomClientHttpRequestInterceptor implements ClientHttpRequestInte
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] bytes, ClientHttpRequestExecution execution) throws IOException {
-        //
+        /*Session session = SessionContext.getSession();
+        if (Objects.nonNull(session)) {
+            String globalTraceId = session.getGlobalTraceId();
+            if (Objects.nonNull(globalTraceId)) {
+                HttpHeaders headers = request.getHeaders();
+                headers.add(TemplateConstants.TRACE_ID_HEADER_KEY, globalTraceId);
+            }
+        }*/
         return execution.execute(request, bytes);
     }
 }

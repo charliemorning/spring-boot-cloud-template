@@ -6,7 +6,7 @@ import org.charlie.template.framework.constants.io.http.HttpConstants;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import static org.charlie.template.framework.utils.io.http.HttpClientUtil.stat;
+import static org.charlie.template.framework.utils.io.http.HttpClientStaticUtil.stat;
 
 
 /**

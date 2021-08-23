@@ -1,37 +1,36 @@
 package org.charlie.template.framework.utils.thread;
 
 import lombok.extern.slf4j.Slf4j;
-import org.charlie.template.framework.constants.thread.ThreadConstants;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * To define a utility class with static ThreadPoolExecutor.
+ * To define a utility class with ThreadPoolExecutor.
  * <p>
- * Delete this class if using <class>org.charlie.template.framework.utils.thread.ThreadUtil2</class>..
+ * Delete this class if using <class>org.charlie.template.framework.utils.thread.ThreadUtil</class>.
  *
  * @author Charlie
  */
 @Slf4j
+@Component
 public class ThreadUtil {
 
-    private static ThreadPoolExecutor threadPoolExecutor;
+    private ExecutorService executorService;
 
-    static {
-        threadPoolExecutor = new ThreadPoolExecutor(
-                ThreadConstants.THREAD_POOL_DEFAULT_NUM,
-                ThreadConstants.THREAD_POOL_DEFAULT_MAX_NUM,
-                ThreadConstants.THREAD_KEEP_ALIVE_SECOND,
-                TimeUnit.SECONDS,
-                new SynchronousQueue<>()
-        );
+    @Autowired
+    public void setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
     }
 
-    public static void execute(Runnable t) {
-        threadPoolExecutor.execute(t);
+    public void execute(Runnable t) {
+        executorService.execute(t);
     }
 
-    public static void remove(Runnable t) {
-        threadPoolExecutor.remove(t);
+    public Future submit(Runnable t) {
+        return executorService.submit(t);
     }
 }

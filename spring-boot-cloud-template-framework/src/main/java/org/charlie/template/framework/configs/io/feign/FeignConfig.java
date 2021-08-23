@@ -5,7 +5,7 @@ import feign.RequestInterceptor;
 import feign.auth.BasicAuthRequestInterceptor;
 import feign.codec.ErrorDecoder;
 import lombok.extern.slf4j.Slf4j;
-import org.charlie.template.framework.interceptors.feign.GlobalTraceIdRequestInterceptor;
+import org.charlie.template.framework.interceptors.out.feign.GlobalTraceIdRequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

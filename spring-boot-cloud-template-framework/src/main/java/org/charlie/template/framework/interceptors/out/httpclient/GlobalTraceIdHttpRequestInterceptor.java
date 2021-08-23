@@ -1,4 +1,4 @@
-package org.charlie.template.framework.interceptors.httpclient;
+package org.charlie.template.framework.interceptors.out.httpclient;
 
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;

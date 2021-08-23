@@ -7,105 +7,46 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpHeaders;
-import org.apache.http.HttpRequest;
-import org.apache.http.NoHttpResponseException;
-import org.apache.http.client.HttpRequestRetryHandler;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.*;
-import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.config.ConnectionConfig;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.pool.PoolStats;
 import org.apache.http.util.EntityUtils;
 import org.charlie.template.framework.constants.io.http.HttpConstants;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLHandshakeException;
 import java.io.IOException;
-import java.io.InterruptedIOException;
-import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-
 /**
- * To implement simple http method in pooling connection manager.
  *
- * @author Charlie
  */
 @Slf4j
+@Component
 public class HttpClientUtil {
 
-    private static CloseableHttpClient httpClient;
+    private CloseableHttpClient httpClient;
 
-    private static final PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(
-            HttpConstants.HTTP_CLIENT_CONN_MANAGER_TTL, TimeUnit.MILLISECONDS);
+    private PoolingHttpClientConnectionManager connManager;
 
-    static {
-        connManager.setMaxTotal(HttpConstants.POOL_MANAGER_MAX_TOTAL_DEFAULT_CONNECTIONS + 1);
-        connManager.setDefaultConnectionConfig(
-                ConnectionConfig
-                        .custom()
-                        .setCharset(StandardCharsets.UTF_8)
-                        .build()
-        );
-        connManager.setDefaultMaxPerRoute(HttpConstants.POOL_MANAGER_MAX_ROUTE_DEFAULT_CONNECTIONS);
-
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectionRequestTimeout(HttpConstants.CONNECTION_TIMEOUT) // 获取连接超时时间
-                .setConnectTimeout(HttpConstants.REQUEST_TIMEOUT) // 请求超时时间
-                .setSocketTimeout(HttpConstants.SOCKET_TIMEOUT) // 响应超时时间
-                .build();
-
-        HttpRequestRetryHandler retry = (exception, executionCount, context) -> {
-            if (executionCount >= HttpConstants.HTTP_CLIENT_RETRY) {
-                return false;
-            }
-            if (exception instanceof NoHttpResponseException) { // 如果服务器丢掉了连接
-                return true;
-            }
-            if (exception instanceof SSLHandshakeException) { // SSL握手异常
-                return false;
-            }
-            if (exception instanceof InterruptedIOException) { // 超时
-                return true;
-            }
-            if (exception instanceof UnknownHostException) { // 目标服务器不可达
-                return false;
-            }
-            if (exception instanceof SSLException) { // ssl握手异常
-                return false;
-            }
-            HttpClientContext clientContext = HttpClientContext.adapt(context);
-            HttpRequest request = clientContext.getRequest();
-            if (!(request instanceof HttpEntityEnclosingRequest)) {
-                return true;
-            }
-            return false;
-        };
-
-        httpClient = HttpClients.custom()
-                .setDefaultRequestConfig(requestConfig)
-                .setRetryHandler(retry)
-                .setConnectionManager(connManager)
-                .setConnectionManagerShared(true)
-                .build();
+    @Autowired
+    public void setHttpClient(CloseableHttpClient httpClient) {
+        this.httpClient = httpClient;
     }
 
-    public static void clearIdleAndExpiredConnections() {
+    @Autowired
+    public void setConnManager(PoolingHttpClientConnectionManager connManager) {
+        this.connManager = connManager;
+    }
+
+
+    public void clearIdleAndExpiredConnections() {
         connManager.closeExpiredConnections();
         connManager.closeIdleConnections(HttpConstants.IDLE_CONNECTION_WAIT_SECOND, TimeUnit.SECONDS);
         log.info(connManager.getTotalStats().toString());
-    }
-
-    public static PoolStats stat() {
-        return connManager.getTotalStats();
     }
 
     public static boolean checkUrl(String url) {
@@ -131,7 +72,7 @@ public class HttpClientUtil {
         return fullUrlStringBuffer.toString();
     }
 
-    public static String request(String url, Method method, int timeout) throws JsonProcessingException {
+    public String request(String url, Method method, int timeout) throws JsonProcessingException {
         return request(url, Maps.newHashMap(), method, timeout);
     }
 
@@ -144,7 +85,7 @@ public class HttpClientUtil {
      * @return
      * @throws JsonProcessingException
      */
-    public static String request(String url, Map<String, Object> parameters, Method method, int timeout) throws JsonProcessingException {
+    public String request(String url, Map<String, Object> parameters, Method method, int timeout) throws JsonProcessingException {
 
         Preconditions.checkNotNull(url, "[url] is null.");
         Preconditions.checkState(checkUrl(url), String.format("[url:%s] is invalid.", url));
@@ -169,7 +110,7 @@ public class HttpClientUtil {
         return responseString;
     }
 
-    private static String execute(HttpRequestBase requester) {
+    private String execute(HttpRequestBase requester) {
 
         String responseString = null;
         CloseableHttpResponse response = null;
@@ -193,52 +134,52 @@ public class HttpClientUtil {
         return responseString;
     }
 
-    private static String post(String url, Map<String, Object> parameters) throws JsonProcessingException {
+    private String post(String url, Map<String, Object> parameters) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         String paramJsonString = mapper.writeValueAsString(parameters);
         return post(url, paramJsonString);
     }
 
-    private static String post(String url, String paramJsonString) {
+    private String post(String url, String paramJsonString) {
         HttpPost httpPost = new HttpPost(url);
         httpPost.setHeader(HttpHeaders.CONTENT_TYPE, HttpConstants.CONTENT_TYPE_JSON_VALUE);
         httpPost.setEntity(new StringEntity(paramJsonString, HttpConstants.CHARSET_UTF8));
         return execute(httpPost);
     }
 
-    private static String get(String url, Map<String, Object> parameters) {
+    private String get(String url, Map<String, Object> parameters) {
         String urlWithParam = concatParamToUrl(url, parameters);
         HttpGet httpGet = new HttpGet(urlWithParam);
         return execute(httpGet);
     }
 
-    private static String put(String url, Map<String, Object> parameters) throws JsonProcessingException {
+    private String put(String url, Map<String, Object> parameters) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         String paramJsonString = mapper.writeValueAsString(parameters);
         return put(url, paramJsonString);
     }
 
-    private static String put(String url, String paramJsonString) {
+    private String put(String url, String paramJsonString) {
         HttpPut httpPut = new HttpPut(url);
         httpPut.setHeader(HttpHeaders.CONTENT_TYPE, HttpConstants.CONTENT_TYPE_JSON_VALUE);
         httpPut.setEntity(new StringEntity(paramJsonString, HttpConstants.CHARSET_UTF8));
         return execute(httpPut);
     }
 
-    private static String patch(String url, Map<String, Object> parameters) throws JsonProcessingException {
+    private String patch(String url, Map<String, Object> parameters) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         String paramJsonString = mapper.writeValueAsString(parameters);
         return patch(url, paramJsonString);
     }
 
-    private static String patch(String url, String paramJsonString) {
+    private String patch(String url, String paramJsonString) {
         HttpPatch httpPatch = new HttpPatch(url);
         httpPatch.setHeader(HttpHeaders.CONTENT_TYPE, HttpConstants.CONTENT_TYPE_JSON_VALUE);
         httpPatch.setEntity(new StringEntity(paramJsonString, HttpConstants.CHARSET_UTF8));
         return execute(httpPatch);
     }
 
-    private static String delete(String url) {
+    private String delete(String url) {
         HttpDelete httpDelete = new HttpDelete(url);
         httpDelete.setHeader(HttpHeaders.CONTENT_TYPE, HttpConstants.CONTENT_TYPE_JSON_VALUE);
         return execute(httpDelete);

@@ -15,7 +15,7 @@ import org.apache.http.message.BasicHeaderElementIterator;
 import org.apache.http.protocol.HTTP;
 import org.charlie.template.framework.configs.TemplateConfig;
 import org.charlie.template.framework.constants.io.http.HttpConstants;
-import org.charlie.template.framework.interceptors.httpclient.GlobalTraceIdHttpRequestInterceptor;
+import org.charlie.template.framework.interceptors.out.httpclient.GlobalTraceIdHttpRequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

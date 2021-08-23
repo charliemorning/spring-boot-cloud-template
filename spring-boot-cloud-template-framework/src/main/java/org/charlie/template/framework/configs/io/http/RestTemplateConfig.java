@@ -1,8 +1,9 @@
 package org.charlie.template.framework.configs.io.http;
 
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.charlie.template.framework.interceptors.httpclient.CustomClientHttpRequestInterceptor;
+import org.charlie.template.framework.interceptors.out.resttemplate.CustomClientHttpRequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +12,9 @@ import org.springframework.web.client.RestTemplate;
 
 
 /**
- * Rest template configure based on Apache HTTP Client
+ * Rest template configure based on Apache HTTP Client.
+ * <p>
+ * Using the ClosableHttpClient bean from <class>org.charlie.template.framework.configs.io.http.ApacheHttpClientConfig</class>
  *
  * @author Charlie
  */
@@ -26,6 +29,7 @@ public class RestTemplateConfig {
     }
 
     @Bean
+    @ConditionalOnBean(CloseableHttpClient.class)
     public HttpComponentsClientHttpRequestFactory clientHttpRequestFactory() {
         HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory();
         clientHttpRequestFactory.setHttpClient(httpClient);

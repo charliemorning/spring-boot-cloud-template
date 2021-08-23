@@ -3,9 +3,9 @@ package org.charlie.template.framework.util.io.http;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
-import org.charlie.template.framework.utils.io.http.HttpClientUtil2;
+import org.charlie.template.framework.utils.io.http.HttpClientUtil;
 import org.charlie.template.framework.utils.io.http.Method;
-import org.charlie.template.framework.utils.thread.ThreadUtil2;
+import org.charlie.template.framework.utils.thread.ThreadUtil;
 import org.junit.Test;
 import org.junit.platform.commons.util.ExceptionUtils;
 import org.junit.runner.RunWith;
@@ -20,13 +20,13 @@ import org.springframework.util.StopWatch;
 @Slf4j
 @RunWith(SpringRunner.class) // start with springboot
 @SpringBootTest
-public class HttpClientUtil2Test {
+public class HttpClientStaticUtil2Test {
 
     @Autowired
-    private HttpClientUtil2 httpClientUtil;
+    private HttpClientUtil httpClientUtil;
 
     @Autowired
-    private ThreadUtil2 threadUtil;
+    private ThreadUtil threadUtil;
 
     private final static String MOCK_SERVER_ADDRESS = "http://127.0.0.1:9000";
 

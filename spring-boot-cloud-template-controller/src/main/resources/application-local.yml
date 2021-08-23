@@ -33,8 +33,8 @@ mybatis:
 
 eureka:
   client:
-    register-with-eureka: true
-    fetch-registry: true
+    register-with-eureka: false
+    fetch-registry: false
     serviceUrl:
       defaultZone: http://127.0.0.1:8761/eureka/
     enabled: true
@@ -48,6 +48,8 @@ eureka:
     prefer-ip-address: false
 
 feign:
+  httpclient:
+    enabled: true
   client:
     config:
       default:
@@ -55,14 +57,15 @@ feign:
         readTimeout: 2000 # unit: ms
         loggerLevel: full # 日志级别
         errorDecoder: org.charlie.template.framework.configs.io.feign.CustomErrorDecoder
-#        retryer: com.example.SimpleRetryer
+#        retryer: org.charlie.template.framework.configs.io.feign.DefaultFeignConfiguration
         requestInterceptors:
-          - org.charlie.template.framework.interceptors.feign.GlobalTraceIdRequestInterceptor
-        # 是否对404错误解码
+          - org.charlie.template.framework.interceptors.out.feign.GlobalTraceIdRequestInterceptor
         decode404: false
 #        encode: com.example.SimpleEncoder
 #        decoder: com.example.SimpleDecoder
 #        contract: com.example.SimpleContract
+  hystrix:
+    enabled: true
 
   compression:
     request:
