@@ -14,7 +14,7 @@ import org.springframework.util.StopWatch;
 
 
 /**
- * use multi-thread to test HttpClientUtil
+ * use multi-thread to test HttpClientStaticUtil
  */
 @Slf4j
 @RunWith(SpringRunner.class) // start with springboot

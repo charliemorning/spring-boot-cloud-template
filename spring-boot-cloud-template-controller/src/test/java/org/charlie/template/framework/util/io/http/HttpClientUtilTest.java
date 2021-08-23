@@ -15,12 +15,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.StopWatch;
 
 /**
- * use multi-thread to test HttpClientUtil2
+ * use multi-thread to test HttpClientUtil
  */
 @Slf4j
 @RunWith(SpringRunner.class) // start with springboot
 @SpringBootTest
-public class HttpClientStaticUtil2Test {
+public class HttpClientUtilTest {
 
     @Autowired
     private HttpClientUtil httpClientUtil;
