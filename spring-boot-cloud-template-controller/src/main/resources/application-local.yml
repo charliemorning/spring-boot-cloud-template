@@ -33,8 +33,8 @@ mybatis:
 
 eureka:
   client:
-    register-with-eureka: false
-    fetch-registry: false
+    register-with-eureka: true
+    fetch-registry: true
     serviceUrl:
       defaultZone: http://127.0.0.1:8761/eureka/
     enabled: true
@@ -44,8 +44,11 @@ eureka:
     lease-expiration-duration-in-seconds: 90
     metadata-map:
       zone: chengdu
-    hostname: localhost
+    hostname: 127.0.0.1
     prefer-ip-address: false
+    health-check-url-path: /health
+    ip-address: 127.0.0.1
+
 
 feign:
   httpclient:
@@ -80,3 +83,5 @@ template: # FIXME: replace config name here
   thread-num: 10
   idle-and-expire-connections-timeout-seconeds: 1
   redis-key-prefix: TEMPLATE_
+  connections-per-route:
+    "[http://127.0.0.1:8101/template]": 100
