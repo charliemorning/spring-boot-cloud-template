@@ -8,6 +8,7 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.config.ConnectionConfig;
 import org.apache.http.conn.ConnectionKeepAliveStrategy;
+import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -29,6 +30,7 @@ import javax.net.ssl.SSLHandshakeException;
 import java.io.InterruptedIOException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -66,6 +68,12 @@ public class ApacheHttpClientConfig {
         );
 
         // TODO: control max connection per route
+        for (Map.Entry<String, Integer> entry: templateConfig.getConnectionsPerRoute().entrySet()) {
+            String url = entry.getKey();
+            Integer connections = entry.getValue();
+            HttpHost localhost = new HttpHost(url);
+            poolingConnectionManager.setMaxPerRoute(new HttpRoute(localhost), connections);
+        }
 //        HttpHost localhost = new HttpHost("http://localhost", 8080);
 //        poolingConnectionManager.setMaxPerRoute(new HttpRoute(localhost), MAX_LOCALHOST_CONNECTIONS);
         return poolingConnectionManager;
