@@ -13,4 +13,4 @@ server:
     max-threads: 500
     max-connections: 100
   servlet:
-    context-path: /template
+    context-path: /example

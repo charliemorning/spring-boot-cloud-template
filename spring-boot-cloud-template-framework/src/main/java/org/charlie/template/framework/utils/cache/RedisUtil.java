@@ -3,7 +3,7 @@ package org.charlie.template.framework.utils.cache;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.charlie.template.framework.configs.TemplateConfig;
+import org.charlie.template.framework.configs.ExampleConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ public class RedisUtil<T> {
 
     private RedisTemplate<String, T> redisTemplate;
 
-    private TemplateConfig config;
+    private ExampleConfig config;
 
     @Autowired
     public void setRedisTemplate(RedisTemplate<String, T> redisTemplate) {
@@ -30,7 +30,7 @@ public class RedisUtil<T> {
     }
 
     @Autowired
-    public void setConfig(TemplateConfig config) {
+    public void setConfig(ExampleConfig config) {
         this.config = config;
     }
 

@@ -3,7 +3,7 @@ package org.charlie.template.framework.configs.thread;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.charlie.template.framework.configs.TemplateConfig;
+import org.charlie.template.framework.configs.ExampleConfig;
 import org.charlie.template.framework.constants.thread.ThreadConstants;
 import org.charlie.template.framework.utils.thread.ThreadPoolMonitorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +26,11 @@ import java.util.concurrent.*;
 @EnableScheduling
 public class ExecutorServiceConfig {
 
-    private TemplateConfig templateConfig;
+    private ExampleConfig exampleConfig;
 
     @Autowired
-    public void setTemplateConfig(TemplateConfig templateConfig) {
-        this.templateConfig = templateConfig;
+    public void setExampleConfig(ExampleConfig exampleConfig) {
+        this.exampleConfig = exampleConfig;
     }
 
     /**

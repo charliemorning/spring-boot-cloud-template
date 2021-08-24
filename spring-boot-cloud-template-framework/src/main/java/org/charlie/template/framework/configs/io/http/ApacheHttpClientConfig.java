@@ -14,7 +14,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeaderElementIterator;
 import org.apache.http.protocol.HTTP;
-import org.charlie.template.framework.configs.TemplateConfig;
+import org.charlie.template.framework.configs.ExampleConfig;
 import org.charlie.template.framework.constants.io.http.HttpConstants;
 import org.charlie.template.framework.interceptors.out.httpclient.GlobalTraceIdHttpRequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,11 +43,11 @@ import java.util.concurrent.TimeUnit;
 @EnableScheduling
 public class ApacheHttpClientConfig {
 
-    private TemplateConfig templateConfig;
+    private ExampleConfig exampleConfig;
 
     @Autowired
-    public void setTemplateConfig(TemplateConfig templateConfig) {
-        this.templateConfig = templateConfig;
+    public void setExampleConfig(ExampleConfig exampleConfig) {
+        this.exampleConfig = exampleConfig;
     }
 
 
@@ -68,7 +68,7 @@ public class ApacheHttpClientConfig {
         );
 
         // TODO: control max connection per route
-        for (Map.Entry<String, Integer> entry: templateConfig.getConnectionsPerRoute().entrySet()) {
+        for (Map.Entry<String, Integer> entry: exampleConfig.getConnectionsPerRoute().entrySet()) {
             String url = entry.getKey();
             Integer connections = entry.getValue();
             HttpHost localhost = new HttpHost(url);

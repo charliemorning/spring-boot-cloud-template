@@ -7,10 +7,15 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 
+/**
+ *
+ *
+ * @author charlie
+ */
 @Data
 @Component
-@ConfigurationProperties(prefix = "template")
-public class TemplateConfig {
+@ConfigurationProperties(prefix = "example-config")
+public class ExampleConfig {
     private int threadNum;
     private int idleAndExpireConnectionsTimeoutSeconeds;
     private String redisKeyPrefix;

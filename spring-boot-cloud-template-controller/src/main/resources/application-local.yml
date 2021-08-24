@@ -79,7 +79,7 @@ feign:
       enabled: true
 
 # application configure
-template: # FIXME: replace config name here
+example-config: # FIXME: replace config name here
   thread-num: 10
   idle-and-expire-connections-timeout-seconeds: 1
   redis-key-prefix: TEMPLATE_
