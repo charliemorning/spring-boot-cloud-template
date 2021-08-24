@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!--  microservice-example by zhangchen  -->
+
+    <parent>
+        <artifactId>microservice-example</artifactId>
+        <groupId>org.charlie</groupId>
+        <version>0.1.0</version>
+        <relativePath>../microservice-example/pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>microservice-example-service</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.charlie</groupId>
+            <artifactId>microservice-example-dao</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.charlie</groupId>
+            <artifactId>microservice-example-framework</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+    </dependencies>
+
+
+</project>
