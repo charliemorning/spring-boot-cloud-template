@@ -15,6 +15,8 @@ public class HttpCustomConfig {
 
     private int poolMaxConnections = HttpConstants.DEFAULT_POOL_MANAGER_MAX_TOTAL_CONNECTIONS;
 
+    private int defaultPoolConnectionsPerRoute = HttpConstants.POOL_MANAGER_MAX_ROUTE_DEFAULT_CONNECTIONS;
+
     private int retry = HttpConstants.DEFAULT_HTTP_CLIENT_RETRY;
 
     private int keepAliveMs = HttpConstants.DEFAULT_KEEP_ALIVE_MS;
