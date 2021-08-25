@@ -6,6 +6,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+
+/**
+ * To fetch bean from spring context.
+ *
+ * @author Charlie
+ */
 @Component
 @Slf4j
 public class SpringContext implements ApplicationContextAware {

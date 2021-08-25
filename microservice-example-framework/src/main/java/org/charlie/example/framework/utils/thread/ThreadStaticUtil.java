@@ -19,8 +19,8 @@ public class ThreadStaticUtil {
 
     static {
         threadPoolExecutor = new ThreadPoolExecutor(
-                ThreadConstants.THREAD_POOL_DEFAULT_NUM,
-                ThreadConstants.THREAD_POOL_DEFAULT_MAX_NUM,
+                ThreadConstants.THREAD_POOL_DEFAULT_COUNT,
+                ThreadConstants.THREAD_POOL_DEFAULT_MAX_COUNT,
                 ThreadConstants.THREAD_KEEP_ALIVE_SECOND,
                 TimeUnit.SECONDS,
                 new SynchronousQueue<>()

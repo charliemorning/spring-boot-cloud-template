@@ -57,7 +57,7 @@
 
     <build>
         <!-- To define the plugin version in your parent POM -->
-        <pluginManagement>
+        <!--<pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -65,7 +65,7 @@
                     <version>2.22.2</version>
                 </plugin>
             </plugins>
-        </pluginManagement>
+        </pluginManagement>-->
     </build>
 
 

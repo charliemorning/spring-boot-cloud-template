@@ -14,8 +14,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeaderElementIterator;
 import org.apache.http.protocol.HTTP;
-import org.charlie.example.framework.configs.ExampleConfig;
 import org.charlie.example.framework.constants.io.http.HttpConstants;
+import org.charlie.example.framework.entities.config.HttpRouteConfig;
 import org.charlie.example.framework.interceptors.out.httpclient.GlobalTraceIdHttpRequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +30,6 @@ import javax.net.ssl.SSLHandshakeException;
 import java.io.InterruptedIOException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -43,13 +42,12 @@ import java.util.concurrent.TimeUnit;
 @EnableScheduling
 public class ApacheHttpClientConfig {
 
-    private ExampleConfig exampleConfig;
+    private HttpCustomConfig exampleConfig;
 
     @Autowired
-    public void setExampleConfig(ExampleConfig exampleConfig) {
+    public void setExampleConfig(HttpCustomConfig exampleConfig) {
         this.exampleConfig = exampleConfig;
     }
-
 
     /**
      * to config pooled connection manager
@@ -58,7 +56,7 @@ public class ApacheHttpClientConfig {
     @Bean
     public PoolingHttpClientConnectionManager poolingHttpClientConnectionManager() {
         PoolingHttpClientConnectionManager poolingConnectionManager = new PoolingHttpClientConnectionManager(HttpConstants.HTTP_CLIENT_CONN_MANAGER_TTL, TimeUnit.MILLISECONDS);
-        poolingConnectionManager.setMaxTotal(HttpConstants.POOL_MANAGER_MAX_TOTAL_DEFAULT_CONNECTIONS);
+        poolingConnectionManager.setMaxTotal(HttpConstants.DEFAULT_POOL_MANAGER_MAX_TOTAL_CONNECTIONS);
         poolingConnectionManager.setDefaultMaxPerRoute(HttpConstants.POOL_MANAGER_MAX_ROUTE_DEFAULT_CONNECTIONS);
         poolingConnectionManager.setDefaultConnectionConfig(
                 ConnectionConfig
@@ -68,11 +66,11 @@ public class ApacheHttpClientConfig {
         );
 
         // TODO: control max connection per route
-        for (Map.Entry<String, Integer> entry: exampleConfig.getConnectionsPerRoute().entrySet()) {
-            String url = entry.getKey();
-            Integer connections = entry.getValue();
-            HttpHost localhost = new HttpHost(url);
-            poolingConnectionManager.setMaxPerRoute(new HttpRoute(localhost), connections);
+        for (HttpRouteConfig httpRouteConfig: exampleConfig.getConnectionsPerRoute()) {
+            String url = httpRouteConfig.getUrl();
+            int connections = httpRouteConfig.getConnections();
+            HttpHost httpHost = new HttpHost(url);
+            poolingConnectionManager.setMaxPerRoute(new HttpRoute(httpHost), connections);
         }
 //        HttpHost localhost = new HttpHost("http://localhost", 8080);
 //        poolingConnectionManager.setMaxPerRoute(new HttpRoute(localhost), MAX_LOCALHOST_CONNECTIONS);
@@ -87,7 +85,7 @@ public class ApacheHttpClientConfig {
     public HttpRequestRetryHandler httpRequestRetryHandler() {
 
         return (exception, executionCount, context) -> {
-            if (executionCount >= HttpConstants.HTTP_CLIENT_RETRY) {
+            if (executionCount >= HttpConstants.DEFAULT_HTTP_CLIENT_RETRY) {
                 return false;
             }
             if (exception instanceof NoHttpResponseException) {
@@ -132,7 +130,7 @@ public class ApacheHttpClientConfig {
                     return Long.parseLong(value) * 1000; // convert to ms
                 }
             }
-            return HttpConstants.DEFAULT_KEEP_ALIVE_TIME;
+            return HttpConstants.DEFAULT_KEEP_ALIVE_MS;
         };
     }
 
@@ -144,7 +142,7 @@ public class ApacheHttpClientConfig {
             public void run() {
                 if (pool != null) {
                     pool.closeExpiredConnections();
-                    pool.closeIdleConnections(HttpConstants.IDLE_CONNECTION_WAIT_SECOND, TimeUnit.MILLISECONDS);
+                    pool.closeIdleConnections(HttpConstants.IDLE_CONNECTION_WAIT_SECONDS, TimeUnit.MILLISECONDS);
                 }
             }
         };
@@ -180,9 +178,9 @@ public class ApacheHttpClientConfig {
     public CloseableHttpClient httpClient() {
 
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(HttpConstants.CONNECTION_TIMEOUT)
-                .setConnectionRequestTimeout(HttpConstants.REQUEST_TIMEOUT)
-                .setSocketTimeout(HttpConstants.SOCKET_TIMEOUT)
+                .setConnectTimeout(HttpConstants.DEFAULT_CONNECTION_TIMEOUT_MS)
+                .setConnectionRequestTimeout(HttpConstants.DEFAULT_REQUEST_TIMEOUT_MS)
+                .setSocketTimeout(HttpConstants.DEFAULT_SOCKET_TIMEOUT_MS)
                 .build();
 
         return HttpClients.custom()

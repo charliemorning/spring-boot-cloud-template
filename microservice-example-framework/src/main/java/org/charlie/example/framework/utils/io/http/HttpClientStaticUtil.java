@@ -48,7 +48,7 @@ public class HttpClientStaticUtil {
             HttpConstants.HTTP_CLIENT_CONN_MANAGER_TTL, TimeUnit.MILLISECONDS);
 
     static {
-        connManager.setMaxTotal(HttpConstants.POOL_MANAGER_MAX_TOTAL_DEFAULT_CONNECTIONS + 1);
+        connManager.setMaxTotal(HttpConstants.DEFAULT_POOL_MANAGER_MAX_TOTAL_CONNECTIONS + 1);
         connManager.setDefaultConnectionConfig(
                 ConnectionConfig
                         .custom()
@@ -58,13 +58,13 @@ public class HttpClientStaticUtil {
         connManager.setDefaultMaxPerRoute(HttpConstants.POOL_MANAGER_MAX_ROUTE_DEFAULT_CONNECTIONS);
 
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectionRequestTimeout(HttpConstants.CONNECTION_TIMEOUT) // 获取连接超时时间
-                .setConnectTimeout(HttpConstants.REQUEST_TIMEOUT) // 请求超时时间
-                .setSocketTimeout(HttpConstants.SOCKET_TIMEOUT) // 响应超时时间
+                .setConnectionRequestTimeout(HttpConstants.DEFAULT_CONNECTION_TIMEOUT_MS) // 获取连接超时时间
+                .setConnectTimeout(HttpConstants.DEFAULT_REQUEST_TIMEOUT_MS) // 请求超时时间
+                .setSocketTimeout(HttpConstants.DEFAULT_SOCKET_TIMEOUT_MS) // 响应超时时间
                 .build();
 
         HttpRequestRetryHandler retry = (exception, executionCount, context) -> {
-            if (executionCount >= HttpConstants.HTTP_CLIENT_RETRY) {
+            if (executionCount >= HttpConstants.DEFAULT_HTTP_CLIENT_RETRY) {
                 return false;
             }
             if (exception instanceof NoHttpResponseException) { // 如果服务器丢掉了连接
@@ -100,7 +100,7 @@ public class HttpClientStaticUtil {
 
     public static void clearIdleAndExpiredConnections() {
         connManager.closeExpiredConnections();
-        connManager.closeIdleConnections(HttpConstants.IDLE_CONNECTION_WAIT_SECOND, TimeUnit.SECONDS);
+        connManager.closeIdleConnections(HttpConstants.IDLE_CONNECTION_WAIT_SECONDS, TimeUnit.SECONDS);
         log.info(connManager.getTotalStats().toString());
     }
 

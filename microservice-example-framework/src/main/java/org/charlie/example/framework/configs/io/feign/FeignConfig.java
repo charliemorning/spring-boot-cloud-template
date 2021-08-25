@@ -45,7 +45,7 @@ public class FeignConfig {
 
     @Bean
     public ErrorDecoder errorDecoder() {
-        return new CustomErrorDecoder();
+        return new ExampleErrorDecoder();
     }
 
     @Bean

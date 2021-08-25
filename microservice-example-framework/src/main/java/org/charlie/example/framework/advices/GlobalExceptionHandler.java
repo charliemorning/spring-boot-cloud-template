@@ -4,7 +4,7 @@ package org.charlie.example.framework.advices;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.charlie.example.framework.constants.ErrorConstants;
-import org.charlie.example.framework.exceptions.TemplateException;
+import org.charlie.example.framework.exceptions.ExampleException;
 import org.charlie.example.framework.entities.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(value={TemplateException.class})
+    @ExceptionHandler(value={ExampleException.class})
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity templateException(TemplateException ex) {
+    public ResponseEntity templateException(ExampleException ex) {
         log.error(String.format("Application Exception: %s", ExceptionUtils.getMessage(ex)));
         log.error(ExceptionUtils.getStackTrace(ex));
         return ResponseEntity.builder()
@@ -69,6 +69,16 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity unknownThrowable(Throwable t) {
         log.error("Unknown error:" + HttpStatus.INTERNAL_SERVER_ERROR, t);
+        return ResponseEntity.builder()
+                .code(ErrorConstants.ERROR_CODE)
+                .message(ErrorConstants.ERROR_MESSAGE)
+                .build();
+    }
+
+    @ExceptionHandler(value = {NullPointerException.class})
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity nullPointerException(NullPointerException e) {
+        log.error("NullPointer error:" + HttpStatus.INTERNAL_SERVER_ERROR, e);
         return ResponseEntity.builder()
                 .code(ErrorConstants.ERROR_CODE)
                 .message(ErrorConstants.ERROR_MESSAGE)

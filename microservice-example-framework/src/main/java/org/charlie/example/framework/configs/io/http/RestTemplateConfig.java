@@ -1,7 +1,7 @@
 package org.charlie.example.framework.configs.io.http;
 
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.charlie.example.framework.interceptors.out.resttemplate.CustomClientHttpRequestInterceptor;
+import org.charlie.example.framework.interceptors.out.resttemplate.ExampleClientHttpRequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -40,8 +40,8 @@ public class RestTemplateConfig {
     public RestTemplate restTemplate() {
         return new RestTemplateBuilder()
                 .requestFactory(this::clientHttpRequestFactory)
-                .errorHandler(new CustomClientErrorHandler()) // define your error handler yourself
-                .interceptors(new CustomClientHttpRequestInterceptor())
+                .errorHandler(new ExampleClientErrorHandler()) // define your error handler yourself
+                .interceptors(new ExampleClientHttpRequestInterceptor())
                 .build();
     }
 }

@@ -3,7 +3,7 @@ package org.charlie.example.framework.interceptors.out.feign;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.extern.slf4j.Slf4j;
-import org.charlie.example.framework.constants.TemplateConstants;
+import org.charlie.example.framework.constants.Constants;
 import org.charlie.example.framework.utils.bean.Session;
 import org.charlie.example.framework.utils.bean.SessionContext;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ public class GlobalTraceIdRequestInterceptor implements RequestInterceptor {
         if (Objects.nonNull(session)) {
             String globalTraceId = session.getGlobalTraceId();
             if (Objects.nonNull(globalTraceId)) {
-                template.header(TemplateConstants.TRACE_ID_HEADER_KEY, globalTraceId);
+                template.header(Constants.TRACE_ID_HEADER_KEY, globalTraceId);
             }
         }
     }

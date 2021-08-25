@@ -17,7 +17,7 @@ import java.io.IOException;
  * @author Charlie
  */
 @Slf4j
-public class CustomClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
+public class ExampleClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] bytes, ClientHttpRequestExecution execution) throws IOException {

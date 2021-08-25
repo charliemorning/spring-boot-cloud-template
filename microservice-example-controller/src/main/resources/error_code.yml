@@ -1,0 +1,3 @@
+error-codes:
+  0000: "success"
+  0001: "success, but fallback"

@@ -59,8 +59,8 @@ public class ExecutorServiceConfig {
     public ExecutorService threadPoolExecutor() {
 
         return new ThreadPoolExecutor(
-                ThreadConstants.THREAD_POOL_DEFAULT_NUM,
-                ThreadConstants.THREAD_POOL_DEFAULT_MAX_NUM,
+                ThreadConstants.THREAD_POOL_DEFAULT_COUNT,
+                ThreadConstants.THREAD_POOL_DEFAULT_MAX_COUNT,
                 ThreadConstants.THREAD_KEEP_ALIVE_SECOND,
                 TimeUnit.SECONDS,
                 blockingQueue(),
@@ -78,7 +78,7 @@ public class ExecutorServiceConfig {
     @Bean
     public ThreadFactory threadFactory() {
         return new ThreadFactoryBuilder()
-                .setUncaughtExceptionHandler(new CustomUncaughtExceptionHandler())
+                .setUncaughtExceptionHandler(new ExampleUncaughtExceptionHandler())
                 .setNameFormat(ThreadConstants.THREAD_NAME_FORMAT)
                 .build();
     }

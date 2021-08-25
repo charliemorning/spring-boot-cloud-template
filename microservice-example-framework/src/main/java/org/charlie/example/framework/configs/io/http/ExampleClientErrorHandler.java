@@ -13,7 +13,7 @@ import java.io.IOException;
  * @author Charlie
  */
 @Slf4j
-public class CustomClientErrorHandler implements ResponseErrorHandler {
+public class ExampleClientErrorHandler implements ResponseErrorHandler {
 
     /**
      * treat http status code 4xx and 5xx as error

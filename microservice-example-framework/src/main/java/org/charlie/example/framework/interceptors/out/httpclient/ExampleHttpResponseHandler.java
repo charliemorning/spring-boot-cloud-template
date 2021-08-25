@@ -7,7 +7,7 @@ import org.apache.http.protocol.HttpContext;
 
 import java.io.IOException;
 
-public class CustomHttpResponseHandler implements HttpResponseInterceptor {
+public class ExampleHttpResponseHandler implements HttpResponseInterceptor {
     @Override
     public void process(HttpResponse httpResponse, HttpContext httpContext) throws HttpException, IOException {
         // TODO: add business error handle

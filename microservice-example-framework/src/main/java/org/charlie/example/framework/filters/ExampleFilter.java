@@ -18,7 +18,7 @@ import java.io.IOException;
 @Component
 @WebServlet(urlPatterns = "/**")
 @Slf4j
-public class TemplateFilter implements Filter {
+public class ExampleFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

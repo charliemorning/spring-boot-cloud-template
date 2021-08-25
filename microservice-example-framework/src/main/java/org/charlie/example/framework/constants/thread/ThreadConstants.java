@@ -9,10 +9,10 @@ package org.charlie.example.framework.constants.thread;
 public class ThreadConstants {
 
     // FIXME: please modify to proper value
-    public final static int THREAD_POOL_DEFAULT_NUM = 100;
+    public final static int THREAD_POOL_DEFAULT_COUNT = 100;
 
     // FIXME: please modify to proper value
-    public final static int THREAD_POOL_DEFAULT_MAX_NUM = 100;
+    public final static int THREAD_POOL_DEFAULT_MAX_COUNT = 100;
 
     // FIXME: please modify to proper value
     public final static int THREAD_KEEP_ALIVE_SECOND = 60;

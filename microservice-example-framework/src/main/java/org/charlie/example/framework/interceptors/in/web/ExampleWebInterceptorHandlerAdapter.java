@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Charlie
  */
 @Slf4j
-public class CustomWebInterceptorHandlerAdapter extends HandlerInterceptorAdapter {
+public class ExampleWebInterceptorHandlerAdapter extends HandlerInterceptorAdapter {
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         return true;

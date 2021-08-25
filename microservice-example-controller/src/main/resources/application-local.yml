@@ -33,8 +33,8 @@ mybatis:
 
 eureka:
   client:
-    register-with-eureka: true
-    fetch-registry: true
+    register-with-eureka: false
+    fetch-registry: false
     serviceUrl:
       defaultZone: http://127.0.0.1:8761/eureka/
     enabled: true
@@ -59,7 +59,7 @@ feign:
         connectTimeout: 2000 # unit: ms
         readTimeout: 2000 # unit: ms
         loggerLevel: full # 日志级别
-        errorDecoder: org.charlie.example.framework.configs.io.feign.CustomErrorDecoder
+        errorDecoder: org.charlie.example.framework.configs.io.feign.ExampleErrorDecoder
 #        retryer: org.charlie.example.framework.configs.io.feign.DefaultFeignConfiguration
         requestInterceptors:
           - org.charlie.example.framework.interceptors.out.feign.GlobalTraceIdRequestInterceptor
@@ -79,9 +79,20 @@ feign:
       enabled: true
 
 # application configure
-example-config: # FIXME: replace config name here
-  thread-num: 10
-  idle-and-expire-connections-timeout-seconeds: 1
+example: # FIXME: replace config name here
+  thread:
+    count: 10
+    max-count: 100
+  http:
+    retry: 0
+    keep-alive-ms: 60000 # unit: ms
+    pool-max-connections: 100
+    connection-timeout-ms: 500
+    request-timeout-ms: 500 # unit: ms
+    socket-timeout-ms: 1000 # unit: ms
+    connections-per-route:
+      - url: http://127.0.0.1:8101/example
+        connections: 100
+    idle-and-expire-connections-timeout-seconds: 1
   redis-key-prefix: EXAMPLE_
-  connections-per-route:
-    "[http://127.0.0.1:8101/example]": 100
+

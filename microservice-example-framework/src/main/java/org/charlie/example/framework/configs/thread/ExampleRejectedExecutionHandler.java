@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author Charlie
  */
 @Slf4j
-public class CustomRejectedExecutionHandler implements RejectedExecutionHandler {
+public class ExampleRejectedExecutionHandler implements RejectedExecutionHandler {
 
     @Override
     public void rejectedExecution(Runnable runnable, ThreadPoolExecutor threadPoolExecutor) {
