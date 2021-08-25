@@ -1,4 +1,4 @@
-package org.charlie.example.framework.utils.bean;
+package org.charlie.example.framework.entities;
 
 
 import lombok.Builder;

@@ -1,6 +1,8 @@
 package org.charlie.example.framework.utils.bean;
 
 
+import org.charlie.example.framework.entities.Session;
+
 /**
  * Session Context to hold request information for each request.
  * <p>

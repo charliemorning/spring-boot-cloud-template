@@ -3,7 +3,7 @@ package org.charlie.example.framework.interceptors.in.web;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.charlie.example.framework.constants.Constants;
-import org.charlie.example.framework.utils.bean.Session;
+import org.charlie.example.framework.entities.Session;
 import org.charlie.example.framework.utils.bean.SessionContext;
 import org.slf4j.MDC;
 import org.springframework.web.servlet.HandlerInterceptor;

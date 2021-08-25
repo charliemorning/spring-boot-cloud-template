@@ -4,7 +4,7 @@ import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.charlie.example.framework.constants.Constants;
-import org.charlie.example.framework.utils.bean.Session;
+import org.charlie.example.framework.entities.Session;
 import org.charlie.example.framework.utils.bean.SessionContext;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package org.charlie.example.framework.utils.cache;
+package org.charlie.example.framework.configs.redis;
 
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;

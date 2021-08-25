@@ -5,7 +5,7 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.protocol.HttpContext;
 import org.charlie.example.framework.constants.Constants;
-import org.charlie.example.framework.utils.bean.Session;
+import org.charlie.example.framework.entities.Session;
 import org.charlie.example.framework.utils.bean.SessionContext;
 
 import java.io.IOException;
