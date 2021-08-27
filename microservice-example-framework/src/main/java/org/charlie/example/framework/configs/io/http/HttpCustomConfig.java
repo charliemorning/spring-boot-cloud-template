@@ -1,5 +1,6 @@
 package org.charlie.example.framework.configs.io.http;
 
+import com.google.common.collect.Lists;
 import lombok.Data;
 import org.charlie.example.framework.constants.io.http.HttpConstants;
 import org.charlie.example.framework.entities.config.HttpRouteConfig;
@@ -27,7 +28,12 @@ public class HttpCustomConfig {
 
     private int socketTimeoutMs = HttpConstants.DEFAULT_SOCKET_TIMEOUT_MS;
 
-    private List<HttpRouteConfig> connectionsPerRoute;
+    private final List<HttpRouteConfig> connectionsPerRoute = Lists.newArrayList();
 
     private int idleAndExpireConnectionsTimeoutSeconds;
+
+    public static class HttpRouteConfig {
+        private String url;
+        private int connections;
+    }
 }
