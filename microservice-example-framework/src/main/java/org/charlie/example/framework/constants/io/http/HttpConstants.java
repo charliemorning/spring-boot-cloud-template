@@ -35,13 +35,13 @@ public class HttpConstants {
     // Idle connection monitor
     public final static String IDLE_CONNECTION_MONITOR_THREAD_NAME = "idle-conn-mon";
     public final static int IDLE_CONNECTION_MONITOR_THREAD_NUM = 3;
-
-    // FIXME: please modify to proper value.
-    public final static int IDLE_CONNECTION_WAIT_SECONDS = 1 * 1000; // unit: ms
-
     // FIXME: please modify to proper value.
     public final static int IDLE_CONNECTION_CLOSE_INTERVAL = 60; // unit: second
 
     // FIXME: please modify to proper value.
     public final static int CONNECTION_MONITOR_INTERVAL = 60; // unit: second
+
+    // FIXME: please modify to proper value.
+    public final static int IDLE_CONNECTION_WAIT_SECONDS = 1; // unit: second
+
 }

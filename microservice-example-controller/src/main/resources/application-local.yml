@@ -94,6 +94,5 @@ example: # FIXME: replace config name here
     connections-per-route:
       - url: http://127.0.0.1:8101/example
         connections: 100
-    idle-and-expire-connections-timeout-seconds: 1
   redis-key-prefix: EXAMPLE_
 

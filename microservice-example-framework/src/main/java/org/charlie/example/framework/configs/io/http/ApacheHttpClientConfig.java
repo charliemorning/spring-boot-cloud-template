@@ -15,7 +15,6 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeaderElementIterator;
 import org.apache.http.protocol.HTTP;
 import org.charlie.example.framework.constants.io.http.HttpConstants;
-import org.charlie.example.framework.entities.config.HttpRouteConfig;
 import org.charlie.example.framework.interceptors.out.httpclient.GlobalTraceIdHttpRequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -42,11 +41,11 @@ import java.util.concurrent.TimeUnit;
 @EnableScheduling
 public class ApacheHttpClientConfig {
 
-    private HttpCustomConfig exampleConfig;
+    private HttpCustomConfig httpConfig;
 
     @Autowired
-    public void setExampleConfig(HttpCustomConfig exampleConfig) {
-        this.exampleConfig = exampleConfig;
+    public void setHttpConfig(HttpCustomConfig httpConfig) {
+        this.httpConfig = httpConfig;
     }
 
     /**
@@ -55,9 +54,9 @@ public class ApacheHttpClientConfig {
      */
     @Bean
     public PoolingHttpClientConnectionManager poolingHttpClientConnectionManager() {
-        PoolingHttpClientConnectionManager poolingConnectionManager = new PoolingHttpClientConnectionManager(HttpConstants.HTTP_CLIENT_CONN_MANAGER_TTL, TimeUnit.MILLISECONDS);
-        poolingConnectionManager.setMaxTotal(HttpConstants.DEFAULT_POOL_MANAGER_MAX_TOTAL_CONNECTIONS);
-        poolingConnectionManager.setDefaultMaxPerRoute(HttpConstants.POOL_MANAGER_MAX_ROUTE_DEFAULT_CONNECTIONS);
+        PoolingHttpClientConnectionManager poolingConnectionManager = new PoolingHttpClientConnectionManager(httpConfig.getManagerTtlMs().toMillis(), TimeUnit.MILLISECONDS);
+        poolingConnectionManager.setMaxTotal(httpConfig.getPoolMaxConnections());
+        poolingConnectionManager.setDefaultMaxPerRoute(httpConfig.getDefaultPoolConnectionsPerRoute());
         poolingConnectionManager.setDefaultConnectionConfig(
                 ConnectionConfig
                         .custom()
@@ -66,7 +65,7 @@ public class ApacheHttpClientConfig {
         );
 
         // TODO: control max connection per route
-        for (HttpRouteConfig httpRouteConfig: exampleConfig.getConnectionsPerRoute()) {
+        for (HttpCustomConfig.HttpRouteConfig httpRouteConfig: httpConfig.getConnectionsPerRoute()) {
             String url = httpRouteConfig.getUrl();
             int connections = httpRouteConfig.getConnections();
             HttpHost httpHost = new HttpHost(url);
@@ -85,7 +84,7 @@ public class ApacheHttpClientConfig {
     public HttpRequestRetryHandler httpRequestRetryHandler() {
 
         return (exception, executionCount, context) -> {
-            if (executionCount >= HttpConstants.DEFAULT_HTTP_CLIENT_RETRY) {
+            if (executionCount >= httpConfig.getRetry()) {
                 return false;
             }
             if (exception instanceof NoHttpResponseException) {
@@ -130,7 +129,7 @@ public class ApacheHttpClientConfig {
                     return Long.parseLong(value) * 1000; // convert to ms
                 }
             }
-            return HttpConstants.DEFAULT_KEEP_ALIVE_MS;
+            return httpConfig.getKeepAliveMs().toMillis();
         };
     }
 
@@ -142,7 +141,7 @@ public class ApacheHttpClientConfig {
             public void run() {
                 if (pool != null) {
                     pool.closeExpiredConnections();
-                    pool.closeIdleConnections(HttpConstants.IDLE_CONNECTION_WAIT_SECONDS, TimeUnit.MILLISECONDS);
+                    pool.closeIdleConnections(HttpConstants.IDLE_CONNECTION_WAIT_SECONDS, TimeUnit.SECONDS);
                 }
             }
         };
@@ -178,9 +177,9 @@ public class ApacheHttpClientConfig {
     public CloseableHttpClient httpClient() {
 
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(HttpConstants.DEFAULT_CONNECTION_TIMEOUT_MS)
-                .setConnectionRequestTimeout(HttpConstants.DEFAULT_REQUEST_TIMEOUT_MS)
-                .setSocketTimeout(HttpConstants.DEFAULT_SOCKET_TIMEOUT_MS)
+                .setConnectTimeout(Math.toIntExact(httpConfig.getConnectionTimeoutMs().toMillis()))
+                .setConnectionRequestTimeout(Math.toIntExact(httpConfig.getRequestTimeoutMs().toMillis()))
+                .setSocketTimeout(Math.toIntExact(httpConfig.getSocketTimeoutMs().toMillis()))
                 .build();
 
         return HttpClients.custom()
