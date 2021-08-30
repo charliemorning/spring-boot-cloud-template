@@ -15,6 +15,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeaderElementIterator;
 import org.apache.http.protocol.HTTP;
 import org.charlie.example.framework.constants.io.http.HttpConstants;
+import org.charlie.example.framework.exceptions.HttpConnectionsConfigureException;
 import org.charlie.example.framework.interceptors.out.httpclient.GlobalTraceIdHttpRequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -53,7 +54,7 @@ public class ApacheHttpClientConfig {
      * @return
      */
     @Bean
-    public PoolingHttpClientConnectionManager poolingHttpClientConnectionManager() {
+    public PoolingHttpClientConnectionManager poolingHttpClientConnectionManager() throws HttpConnectionsConfigureException {
         PoolingHttpClientConnectionManager poolingConnectionManager = new PoolingHttpClientConnectionManager(httpConfig.getManagerTtlMs().toMillis(), TimeUnit.MILLISECONDS);
         poolingConnectionManager.setMaxTotal(httpConfig.getPoolMaxConnections());
         poolingConnectionManager.setDefaultMaxPerRoute(httpConfig.getDefaultPoolConnectionsPerRoute());
@@ -65,12 +66,19 @@ public class ApacheHttpClientConfig {
         );
 
         // TODO: control max connection per route
+        int sumRouteConns = 0;
         for (HttpCustomConfig.HttpRouteConfig httpRouteConfig: httpConfig.getConnectionsPerRoute()) {
             String url = httpRouteConfig.getUrl();
             int connections = httpRouteConfig.getConnections();
+            sumRouteConns += connections;
             HttpHost httpHost = new HttpHost(url);
             poolingConnectionManager.setMaxPerRoute(new HttpRoute(httpHost), connections);
         }
+
+        if (httpConfig.getPoolMaxConnections() < sumRouteConns) {
+            throw new HttpConnectionsConfigureException("error", httpConfig.getPoolMaxConnections(), sumRouteConns);
+        }
+
 //        HttpHost localhost = new HttpHost("http://localhost", 8080);
 //        poolingConnectionManager.setMaxPerRoute(new HttpRoute(localhost), MAX_LOCALHOST_CONNECTIONS);
         return poolingConnectionManager;
@@ -174,7 +182,7 @@ public class ApacheHttpClientConfig {
      * @return
      */
     @Bean
-    public CloseableHttpClient httpClient() {
+    public CloseableHttpClient httpClient() throws HttpConnectionsConfigureException {
 
         RequestConfig requestConfig = RequestConfig.custom()
                 .setConnectTimeout(Math.toIntExact(httpConfig.getConnectionTimeoutMs().toMillis()))

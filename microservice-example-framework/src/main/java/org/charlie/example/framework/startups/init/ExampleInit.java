@@ -1,4 +1,4 @@
-package org.charlie.example.framework.inits;
+package org.charlie.example.framework.startups.init;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

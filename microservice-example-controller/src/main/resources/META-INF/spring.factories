@@ -1,0 +1,2 @@
+org.springframework.boot.diagnostics.FailureAnalyzer=\
+  org.charlie.example.framework.startups.failure.HttpConnectionsConfigureFailureAnalyzer
