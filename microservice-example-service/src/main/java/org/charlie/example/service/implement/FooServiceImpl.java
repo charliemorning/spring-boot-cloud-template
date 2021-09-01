@@ -9,6 +9,10 @@ import org.charlie.example.dao.FooDAO;
 import org.charlie.example.po.FooPO;
 import org.charlie.example.service.FooService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
@@ -17,6 +21,7 @@ import java.util.Objects;
 
 
 @Service
+@CacheConfig(cacheNames = "foo-cache")
 public class FooServiceImpl implements FooService {
 
     private FooDAO fooDAO;
@@ -26,6 +31,8 @@ public class FooServiceImpl implements FooService {
         this.fooDAO = fooDAO;
     }
 
+
+    @Cacheable(key="#fooBO.id", unless = "#fooBo.id = 1")
     @Override
     public List<FooBO> queryFoos(FooBO fooBO) {
         FooPO fooPO = FooPO.builder().build();
@@ -50,6 +57,7 @@ public class FooServiceImpl implements FooService {
     }
 
     @Override
+    @CachePut(key="#fooBO.id")
     public void createFoo(FooBO fooBO) {
         FooPO fooPO = FooPO.builder().build();
         BeanUtil.copy(fooBO, fooPO);
@@ -57,6 +65,7 @@ public class FooServiceImpl implements FooService {
     }
 
     @Override
+    @CachePut(key="#fooBO.id")
     public void modifyFoo(FooBO fooBO) {
         FooPO fooPO = FooPO.builder().build();
         BeanUtil.copy(fooBO, fooPO);
@@ -64,6 +73,7 @@ public class FooServiceImpl implements FooService {
     }
 
     @Override
+    @CacheEvict(key="#fooBO.id")
     public void removeFoo(FooBO fooBO) {
         FooPO fooPO = FooPO.builder().build();
         BeanUtil.copy(fooBO, fooPO);

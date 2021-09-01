@@ -86,7 +86,7 @@ example: # FIXME: replace config name here
   http:
     retry: 0
     keep-alive-ms: 60000 # unit: ms
-    pool-max-connections: 99
+    pool-max-connections: 100
     default-pool-connections-per-route: 100
     connection-timeout-ms: 500
     request-timeout-ms: 500 # unit: ms
