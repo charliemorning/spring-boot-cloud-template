@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Primary;
 @Configuration
 public class CaffeineCacheConfig {
 
-    @Bean
+    /*@Bean
     @Primary
     public CaffeineCacheManager caffeineCacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager("customers", "orders");
@@ -22,5 +22,5 @@ public class CaffeineCacheConfig {
                 .recordStats());
         return cacheManager;
     }
-
+*/
 }

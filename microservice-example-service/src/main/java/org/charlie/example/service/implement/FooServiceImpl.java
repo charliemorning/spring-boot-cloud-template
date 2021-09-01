@@ -32,7 +32,7 @@ public class FooServiceImpl implements FooService {
     }
 
 
-    @Cacheable(key="#fooBO.id", unless = "#fooBo.id = 1")
+    @Cacheable(key="#fooBO.id", unless = "#result == null")
     @Override
     public List<FooBO> queryFoos(FooBO fooBO) {
         FooPO fooPO = FooPO.builder().build();
@@ -57,7 +57,7 @@ public class FooServiceImpl implements FooService {
     }
 
     @Override
-    @CachePut(key="#fooBO.id")
+    @CachePut(key="#fooBO.id", unless="#result == null")
     public void createFoo(FooBO fooBO) {
         FooPO fooPO = FooPO.builder().build();
         BeanUtil.copy(fooBO, fooPO);
@@ -65,7 +65,7 @@ public class FooServiceImpl implements FooService {
     }
 
     @Override
-    @CachePut(key="#fooBO.id")
+    @CachePut(key="#fooBO.id", unless="#result == null")
     public void modifyFoo(FooBO fooBO) {
         FooPO fooPO = FooPO.builder().build();
         BeanUtil.copy(fooBO, fooPO);
