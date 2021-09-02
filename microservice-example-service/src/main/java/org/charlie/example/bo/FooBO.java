@@ -1,13 +1,18 @@
 package org.charlie.example.bo;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.Serializable;
 
 @Data
 @Builder
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class FooBO implements Serializable {
+    @Value("id")
     private int id;
+    @Value("name")
     private String name;
 }

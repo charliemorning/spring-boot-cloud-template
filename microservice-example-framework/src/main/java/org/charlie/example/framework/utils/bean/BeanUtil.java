@@ -7,6 +7,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Supplier;
 
 
 /**
@@ -60,5 +64,38 @@ public class BeanUtil implements ApplicationContextAware {
      */
     public static void copy(@NotNull Object source, @NotNull Object target) {
         BeanUtils.copyProperties(source, target);
+    }
+
+
+    /**
+     * @usage:
+     * List<FooPO> fooPOList = fooDAO.selectFoos(fooPO);
+     * return BeanUtil.copyList(fooPOList, FooBO::new);
+     *
+     * @param sourceList
+     * @param targets
+     * @param <S>
+     * @param <T>
+     * @return
+     */
+    public static <S, T> List<T> copyList(@NotNull List<S> sourceList, @NotNull Supplier<T> targets) {
+        return copyList(sourceList, targets, null);
+    }
+
+    public static <S, T> List<T> copyList(@NotNull List<S> sourceList, @NotNull Supplier<T> targets, Callback<S, T> callback) {
+        List<T> list = new ArrayList<>(sourceList.size());
+        for (S source : sourceList) {
+            T t = targets.get();
+            BeanUtils.copyProperties(source, t);
+            if (Objects.nonNull(callback)) {
+                callback.callback(source, t);
+            }
+            list.add(t);
+        }
+        return list;
+    }
+
+    public interface Callback<S, T> {
+        void callback(S source, T target);
     }
 }

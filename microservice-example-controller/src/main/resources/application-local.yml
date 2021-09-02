@@ -26,6 +26,7 @@ spring:
         max-wait: -1ms
         min-idle: 0
         max-idle: 8
+    timeout: 500ms
 mybatis:
   type-aliases-package: org.charlie.example
   mapper-locations: classpath:mapper/mysql/*.xml
@@ -94,5 +95,14 @@ example: # FIXME: replace config name here
     connections-per-route:
       - url: http://127.0.0.1:8101/example
         connections: 100
+  cache:
+    local:
+      enable: true
+      init-size: 200
+      max-size: 1000
+      expire-after-access-ms: 60000
+    dist:
+      enable: true
+      ttl-seconds: 60
   redis-key-prefix: EXAMPLE_
 
