@@ -50,7 +50,6 @@ eureka:
     health-check-url-path: /health
     ip-address: 127.0.0.1
 
-
 feign:
   httpclient:
     enabled: true
@@ -97,12 +96,12 @@ example: # FIXME: replace config name here
         connections: 100
   cache:
     local:
-      enable: true
+      enable: false  # default: false
       init-size: 200
       max-size: 1000
       expire-after-access-ms: 60000
     dist:
-      enable: true
+      enable: false  # default: false
       ttl-seconds: 60
   redis-key-prefix: EXAMPLE_
 

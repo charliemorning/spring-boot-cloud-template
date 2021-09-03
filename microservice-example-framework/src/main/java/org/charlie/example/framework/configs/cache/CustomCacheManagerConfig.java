@@ -7,6 +7,7 @@ import io.lettuce.core.event.connection.ConnectionActivatedEvent;
 import io.lettuce.core.event.connection.ConnectionDeactivatedEvent;
 import io.lettuce.core.resource.ClientResources;
 import lombok.extern.slf4j.Slf4j;
+import org.charlie.example.framework.constants.cache.CacheConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -34,38 +35,24 @@ import java.util.LinkedList;
 import java.util.Optional;
 
 
+/**
+ *
+ */
 @Slf4j
 @Configuration
 public class CustomCacheManagerConfig extends CachingConfigurerSupport {
 
+    @Autowired
     CacheCustomConfig.LocalCacheConfig localCacheConfig;
 
+    @Autowired
     CacheCustomConfig.DistributedCacheConfig distributedCacheConfig;
 
     @Autowired
     LettuceConnectionFactory lettuceConnectionFactory;
 
+    @Autowired
     CustomCompositeCacheManager customCompositeCacheManager;
-
-    @Autowired
-    public void setLocalCacheConfig(CacheCustomConfig.LocalCacheConfig localCacheConfig) {
-        this.localCacheConfig = localCacheConfig;
-    }
-
-    @Autowired
-    public void setDistributedCacheConfig(CacheCustomConfig.DistributedCacheConfig distributedCacheConfig) {
-        this.distributedCacheConfig = distributedCacheConfig;
-    }
-
-
-    public void setLettuceConnectionFactory(LettuceConnectionFactory lettuceConnectionFactory) {
-        this.lettuceConnectionFactory = lettuceConnectionFactory;
-    }
-
-    @Autowired
-    public void setCustomCompositeCacheManager(CustomCompositeCacheManager customCompositeCacheManager) {
-        this.customCompositeCacheManager = customCompositeCacheManager;
-    }
 
     @Override
     public CacheErrorHandler errorHandler() {
@@ -94,7 +81,8 @@ public class CustomCacheManagerConfig extends CachingConfigurerSupport {
      *
      * @return
      */
-    private RedisCacheManager redisCacheManager() {
+    @Bean(CacheConstants.REDIS_CACHE_MANAGER)
+    public RedisCacheManager redisCacheManager() {
         return RedisCacheManager.builder(lettuceConnectionFactory)
                 .cacheDefaults(cacheConfiguration())
                 .build();
@@ -105,7 +93,8 @@ public class CustomCacheManagerConfig extends CachingConfigurerSupport {
      *
      * @return
      */
-    private CaffeineCacheManager caffeineCacheManager() {
+    @Bean(CacheConstants.CAFFEINE_CACHE_MANAGER)
+    public CaffeineCacheManager caffeineCacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
         cacheManager.setCaffeine(Caffeine.newBuilder()
                 .initialCapacity(localCacheConfig.getInitSize())
@@ -116,20 +105,18 @@ public class CustomCacheManagerConfig extends CachingConfigurerSupport {
         return cacheManager;
     }
 
-    @Bean
+    @Bean("customCompositeCacheManager")
     @Primary
     public CustomCompositeCacheManager customCompositeCacheManager() {
-        LinkedList<CacheManager> cacheManagers = Lists.newLinkedList();
+        RedisCacheManager redisCacheManager = null;
+        CaffeineCacheManager caffeineCacheManager = null;
         if (distributedCacheConfig.isEnable()) {
-            cacheManagers.add(redisCacheManager());
+            redisCacheManager = redisCacheManager();
         }
-
         if (localCacheConfig.isEnable()) {
-            cacheManagers.add(caffeineCacheManager());
+            caffeineCacheManager = caffeineCacheManager();
         }
-        CacheManager[] cacheManagersArray = new CacheManager[cacheManagers.size()];
-        cacheManagers.toArray(cacheManagersArray);
-        return new CustomCompositeCacheManager(cacheManagersArray);
+        return new CustomCompositeCacheManager(redisCacheManager, caffeineCacheManager);
     }
 
     @PostConstruct

@@ -4,13 +4,13 @@ package org.charlie.example.controller.v1;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.charlie.example.bo.FooBO;
+import org.charlie.example.entities.vo.FooVO;
 import org.charlie.example.framework.utils.bean.BeanUtil;
 import org.charlie.example.service.FooService;
-import org.charlie.example.entities.vo.FooVO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Nullable;
+import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
@@ -19,9 +19,16 @@ public class FooController {
 
     FooService fooService;
 
-    @Autowired
+    FooService fooServiceWithLocalCache;
+
+    @Resource(name = "fooServiceImpl")
     public void setFooService(FooService fooService) {
         this.fooService = fooService;
+    }
+
+    @Resource(name = "fooServiceWithLocalCache")
+    public void setFooServiceWithLocalCache(FooService fooServiceWithLocalCache) {
+        this.fooServiceWithLocalCache = fooServiceWithLocalCache;
     }
 
     @GetMapping("")
@@ -36,23 +43,16 @@ public class FooController {
                 return fooVO;
             }
         });
+
         return fooVOs;
     }
 
     @GetMapping("/{id:\\d+}")
     public List<FooVO> getFoos(@PathVariable int id) {
-
         FooBO fooBO = FooBO.builder().id(id).build();
-
-        List<FooVO> fooVOs = Lists.transform(fooService.queryFoos(fooBO), new Function<FooBO, FooVO>() {
-            @Nullable
-            @Override
-            public FooVO apply(@Nullable FooBO fooBO) {
-                FooVO fooVO = FooVO.builder().build();
-                BeanUtil.copy(fooBO, fooVO);
-                return fooVO;
-            }
-        });
+        List<FooBO> fooBOs = fooService.queryFoos(fooBO);
+        List<FooVO> fooVOs = BeanUtil.copyList(fooBOs, FooVO::new);
+        List<FooBO> fooBOs2 = fooServiceWithLocalCache.queryFoos(fooBO);
         return fooVOs;
     }
 
@@ -81,7 +81,6 @@ public class FooController {
     @DeleteMapping(value = "/{id:\\d+}")
     public void deleteFoo(@PathVariable int id) {
         FooBO fooBO = FooBO.builder().id(id).build();
-        fooService.removeFoo(fooBO);
+        fooServiceWithLocalCache.removeFoo(fooBO);
     }
-
 }

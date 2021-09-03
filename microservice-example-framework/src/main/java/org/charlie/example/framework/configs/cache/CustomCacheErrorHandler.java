@@ -8,6 +8,8 @@ import org.springframework.cache.interceptor.SimpleCacheErrorHandler;
 
 /**
  * To define error handler when cache fail to work, for avoiding disturbing the execution.
+ *
+ * @author Charlie
  */
 @Slf4j
 public class CustomCacheErrorHandler extends SimpleCacheErrorHandler {
