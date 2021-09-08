@@ -100,7 +100,6 @@ public class CustomCacheManagerConfig extends CachingConfigurerSupport {
                 .initialCapacity(localCacheConfig.getInitSize())
                 .maximumSize(localCacheConfig.getMaxSize())
                 .expireAfterAccess(localCacheConfig.getExpireAfterAccessMs())
-                .weakKeys()
                 .recordStats());
         return cacheManager;
     }
