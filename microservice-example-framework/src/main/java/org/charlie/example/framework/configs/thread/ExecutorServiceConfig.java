@@ -17,7 +17,12 @@ import java.util.concurrent.*;
 
 
 /**
- * To define thread pool executor.
+ * To define thread pool executor, including:
+ *
+ * 1. to define custom thread factory.
+ * 2. to define rejection policy.
+ * 3. to define blocking queue.
+ *
  *
  * @author Charlie
  */
@@ -26,12 +31,13 @@ import java.util.concurrent.*;
 @EnableScheduling
 public class ExecutorServiceConfig {
 
-    private ExampleConfig exampleConfig;
+    private ThreadCustomConfig threadCustomConfig;
 
     @Autowired
-    public void setExampleConfig(ExampleConfig exampleConfig) {
-        this.exampleConfig = exampleConfig;
+    public void setThreadCustomConfig(ThreadCustomConfig threadCustomConfig) {
+        this.threadCustomConfig = threadCustomConfig;
     }
+
 
     /**
      * To configure RejectedExecutionHandler
@@ -59,9 +65,9 @@ public class ExecutorServiceConfig {
     public ExecutorService threadPoolExecutor() {
 
         return new ThreadPoolExecutor(
-                ThreadConstants.THREAD_POOL_DEFAULT_COUNT,
-                ThreadConstants.THREAD_POOL_DEFAULT_MAX_COUNT,
-                ThreadConstants.THREAD_KEEP_ALIVE_SECOND,
+                threadCustomConfig.getCount(),
+                threadCustomConfig.getMaxCount(),
+                threadCustomConfig.getKeepAliveSec().toSeconds(),
                 TimeUnit.SECONDS,
                 blockingQueue(),
                 threadFactory(),
