@@ -27,6 +27,9 @@ public class GlobalTraceIdInterceptorHandler implements HandlerInterceptor {
             MDC.put(Constants.TRACE_ID_MDC_KEY, traceId);
             SessionContext.setSession(Session.builder().globalTraceId(traceId).build());
             log.debug(String.format("Trace ID: %s", traceId));
+        } else {
+            MDC.clear();
+            SessionContext.clearSession();
         }
         return true;
     }

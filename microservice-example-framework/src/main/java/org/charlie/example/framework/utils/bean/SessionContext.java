@@ -21,4 +21,8 @@ public class SessionContext {
     public static Session getSession() {
         return threadLocal.get();
     }
+
+    public static void clearSession() {
+        threadLocal.remove();
+    }
 }
