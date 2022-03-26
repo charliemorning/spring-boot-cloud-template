@@ -67,7 +67,7 @@ public class ExecutorServiceConfig {
         return new ThreadPoolExecutor(
                 threadCustomConfig.getCount(),
                 threadCustomConfig.getMaxCount(),
-                threadCustomConfig.getKeepAliveSec().toSeconds(),
+                threadCustomConfig.getKeepAliveSec().getSeconds(),
                 TimeUnit.SECONDS,
                 blockingQueue(),
                 threadFactory(),

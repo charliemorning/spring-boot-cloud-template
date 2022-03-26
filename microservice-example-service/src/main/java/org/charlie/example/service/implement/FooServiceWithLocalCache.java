@@ -1,10 +1,10 @@
 package org.charlie.example.service.implement;
 
-import org.charlie.example.bo.FooBO;
-import org.charlie.example.dao.FooDAO;
+import org.charlie.example.bo.FooBo;
+import org.charlie.example.dao.FooDao;
 import org.charlie.example.framework.constants.cache.CacheConstants;
 import org.charlie.example.framework.utils.bean.BeanUtil;
-import org.charlie.example.po.FooPO;
+import org.charlie.example.po.FooPo;
 import org.charlie.example.service.FooService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -20,34 +20,33 @@ import java.util.Objects;
 @Service("fooServiceWithLocalCache")
 @CacheConfig(cacheNames = "foo-cache")
 public class FooServiceWithLocalCache implements FooService {
-    private FooDAO fooDAO;
+    private FooDao fooDAO;
 
     @Autowired
-    public void setFooDAO(FooDAO fooDAO) {
+    public void setFooDAO(FooDao fooDAO) {
         this.fooDAO = fooDAO;
     }
 
     @Cacheable(key = "#fooBO.id", unless = "#result == null", cacheManager = CacheConstants.CAFFEINE_CACHE_MANAGER)
     @Override
-    public List<FooBO> queryFoos(FooBO fooBO) {
-        FooPO fooPO = FooPO.builder().build();
+    public List<FooBo> queryFoos(FooBo fooBO) {
+        FooPo fooPO = FooPo.builder().build();
         if (Objects.isNull(fooBO)) {
             fooPO = null;
         } else {
             BeanUtil.copy(fooBO, fooPO);
         }
 
-        List<FooPO> fooPOList = fooDAO.selectFoos(fooPO);
+        List<FooPo> fooPoList = fooDAO.selectFoos(fooPO);
 
-        return BeanUtil.copyList(fooPOList, FooBO::new);
+        return BeanUtil.copyList(fooPoList, FooBo::new);
     }
 
     @Override
-    public FooBO createFoo(FooBO fooBO) {
-        FooPO fooPO = FooPO.builder().build();
+    public void createFoo(FooBo fooBO) {
+        FooPo fooPO = FooPo.builder().build();
         BeanUtil.copy(fooBO, fooPO);
         fooDAO.insertFoo(fooPO);
-        return fooBO;
     }
 
 
@@ -63,11 +62,10 @@ public class FooServiceWithLocalCache implements FooService {
                     @CacheEvict(key = "#fooBO.id", beforeInvocation = true,  cacheManager = CacheConstants.CAFFEINE_CACHE_MANAGER),
                     @CacheEvict(key = "#fooBO.id", cacheManager = CacheConstants.CAFFEINE_CACHE_MANAGER)
             })
-    public FooBO modifyFoo(FooBO fooBO) {
-        FooPO fooPO = FooPO.builder().build();
+    public void modifyFoo(FooBo fooBO) {
+        FooPo fooPO = FooPo.builder().build();
         BeanUtil.copy(fooBO, fooPO);
         fooDAO.updateFoo(fooPO);
-        return fooBO;
     }
 
     @Override
@@ -76,10 +74,9 @@ public class FooServiceWithLocalCache implements FooService {
                     @CacheEvict(key = "#fooBO.id", beforeInvocation = true, cacheManager = CacheConstants.CAFFEINE_CACHE_MANAGER),
                     @CacheEvict(key = "#fooBO.id", cacheManager = CacheConstants.CAFFEINE_CACHE_MANAGER)
             })
-    public FooBO removeFoo(FooBO fooBO) {
-        FooPO fooPO = FooPO.builder().build();
+    public void removeFoo(FooBo fooBO) {
+        FooPo fooPO = FooPo.builder().build();
         BeanUtil.copy(fooBO, fooPO);
         fooDAO.deleteFoo(fooPO);
-        return fooBO;
     }
 }

@@ -33,13 +33,13 @@ public class ControllerTest {
 
     @RequestMapping("/")
     public String testIndex() {
-        log.debug("Hello World!");
+//        log.debug("Hello World!");
         return "Hello World!";
     }
 
     @GetMapping("/get")
     public String testHttpClientGet(@RequestParam("path") String path) {
-        log.debug(path);
+//        log.debug(path);
         return requestServiceTest.get(path);
     }
 

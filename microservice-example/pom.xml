@@ -13,6 +13,7 @@
     <version>0.1.0</version>
     <modules>
         <module>../microservice-example-framework</module>
+        <module>../microservice-example-nlp</module>
         <module>../microservice-example-dao</module>
         <module>../microservice-example-manager</module>
         <module>../microservice-example-service</module>
@@ -23,14 +24,35 @@
         <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
         <springcloud.version>2.2.2.RELEASE</springcloud.version>
         <springboot.version>2.2.6.RELEASE</springboot.version>
-        <lombok.version>1.18.12</lombok.version>
+        <lombok.version>1.18.20</lombok.version>
         <guava.version>23.0</guava.version>
         <common-lang3.version>3.10</common-lang3.version>
+        <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <hibernate-validator.version>7.0.4.Final</hibernate-validator.version>
 
         <spring.version>5.2.5.RELEASE</spring.version>
         <mybatis-starter.version>2.1.2</mybatis-starter.version>
         <mysql-conn-java.version>8.0.21</mysql-conn-java.version>
         <sentinel.version>1.8.2</sentinel.version>
+
+        <dl4j-master.version>1.0.0-M1.1</dl4j-master.version>
+        <!-- Change the nd4j.backend property to nd4j-cuda-X-platform to use CUDA GPUs -->
+        <!-- <nd4j.backend>nd4j-cuda-10.2-platform</nd4j.backend> -->
+        <nd4j.backend>nd4j-native</nd4j.backend>
+        <java.version>1.8</java.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven.minimum.version>3.3.1</maven.minimum.version>
+        <exec-maven-plugin.version>1.4.0</exec-maven-plugin.version>
+        <maven-shade-plugin.version>2.4.3</maven-shade-plugin.version>
+        <jcommon.version>1.0.23</jcommon.version>
+        <jfreechart.version>1.0.13</jfreechart.version>
+        <logback.version>1.1.7</logback.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit.version>5.8.0-M1</junit.version>
+        <javacv.version>1.5.5</javacv.version>
+
+        <stanford.version>4.2.0</stanford.version>
+        <stanford.model.version>model-chinese</stanford.model.version>
 
         <docker.image.prefix>springboot</docker.image.prefix>
         <dockerfile-maven-version>1.4.13</dockerfile-maven-version>
@@ -149,8 +171,30 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+
             <scope>test</scope>
         </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
+        </dependency>
+
 
     </dependencies>
 

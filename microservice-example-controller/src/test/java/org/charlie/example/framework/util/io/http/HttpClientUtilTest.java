@@ -6,9 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.charlie.example.framework.utils.io.http.HttpClientUtil;
 import org.charlie.example.framework.utils.io.http.Method;
 import org.charlie.example.framework.utils.thread.ThreadUtil;
-import org.junit.Test;
+//import org.junit.Test;
 import org.junit.platform.commons.util.ExceptionUtils;
-import org.junit.runner.RunWith;
+//import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -18,7 +18,7 @@ import org.springframework.util.StopWatch;
  * use multi-thread to test HttpClientUtil
  */
 @Slf4j
-@RunWith(SpringRunner.class) // start with springboot
+//@RunWith(SpringRunner.class) // start with springboot
 @SpringBootTest
 public class HttpClientUtilTest {
 
@@ -34,7 +34,7 @@ public class HttpClientUtilTest {
 
     private final static int THREAD_SLEEP_TIME = 50; // this value should not be too small, in case of running out of connection
 
-    @Test
+//    @Test
     public void postTest() {
 
         log.info("start test");

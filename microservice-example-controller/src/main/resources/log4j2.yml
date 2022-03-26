@@ -34,7 +34,7 @@ Appenders:
         max: 100
 Loggers:
   Root:
-    level: debug
+    level: info
     AppenderRef:
       - ref: CONSOLE
       - ref: COMMON

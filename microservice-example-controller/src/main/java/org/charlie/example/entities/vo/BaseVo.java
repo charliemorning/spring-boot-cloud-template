@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class BaseVO {
+public class BaseVo {
 
     @JsonAlias("result_code")
     public String resultCode;

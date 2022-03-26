@@ -1,10 +1,11 @@
 package org.charlie.example.service.implement;
 
 
-import org.charlie.example.bo.FooBO;
-import org.charlie.example.dao.FooDAO;
+import org.charlie.example.bo.FooBo;
+import org.charlie.example.bo.FooBoMapper;
+import org.charlie.example.dao.FooDao;
 import org.charlie.example.framework.utils.bean.BeanUtil;
-import org.charlie.example.po.FooPO;
+import org.charlie.example.po.FooPo;
 import org.charlie.example.service.FooService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -21,63 +22,57 @@ import java.util.Objects;
 @CacheConfig(cacheNames = "foo-cache")
 public class FooServiceImpl implements FooService {
 
-    private FooDAO fooDAO;
+    private FooDao fooDao;
 
     @Autowired
-    public void setFooDAO(FooDAO fooDAO) {
-        this.fooDAO = fooDAO;
+    public void setFooDAO(FooDao fooDao) {
+        this.fooDao = fooDao;
     }
 
-    @Cacheable(key = "#fooBO.id", unless = "#result == null")
+    @Cacheable(key = "#fooBo.id", unless = "#result == null")
     @Override
-    public List<FooBO> queryFoos(FooBO fooBO) {
-        FooPO fooPO = FooPO.builder().build();
-        if (Objects.isNull(fooBO)) {
-            fooPO = null;
+    public List<FooBo> queryFoos(FooBo fooBo) {
+        FooPo fooPo = null;
+        if (Objects.isNull(fooBo)) {
+            fooPo = null;
         } else {
-            BeanUtil.copy(fooBO, fooPO);
+            fooPo = FooBoMapper.INSTANCE.toPo(fooBo);
         }
-        List<FooPO> fooPOList = fooDAO.selectFoos(fooPO);
-        return BeanUtil.copyList(fooPOList, FooBO::new);
+        List<FooPo> fooPoList = fooDao.selectFoos(fooPo);
+        return BeanUtil.copyList(fooPoList, FooBo::new);
     }
 
     @Override
-    public FooBO createFoo(FooBO fooBO) {
-        FooPO fooPO = FooPO.builder().build();
-        BeanUtil.copy(fooBO, fooPO);
-        fooDAO.insertFoo(fooPO);
-        return fooBO;
+    public void createFoo(FooBo fooBo) {
+        FooPo fooPo = FooBoMapper.INSTANCE.toPo(fooBo);
+        fooDao.insertFoo(fooPo);
     }
 
     /**
      * cache aside pattern
      *
-     * @param fooBO
+     * @param fooBo
      * @return
      */
     @Override
     @Caching(
             evict = {
-                    @CacheEvict(key = "#fooBO.id", beforeInvocation = true),
-                    @CacheEvict(key = "#fooBO.id")
+                    @CacheEvict(key = "#fooB0.id", beforeInvocation = true),
+                    @CacheEvict(key = "#fooBo.id")
             })
-    public FooBO modifyFoo(FooBO fooBO) {
-        FooPO fooPO = FooPO.builder().build();
-        BeanUtil.copy(fooBO, fooPO);
-        fooDAO.updateFoo(fooPO);
-        return fooBO;
+    public void modifyFoo(FooBo fooBo) {
+        FooPo fooPo = FooBoMapper.INSTANCE.toPo(fooBo);
+        fooDao.updateFoo(fooPo);
     }
 
     @Override
     @Caching(
             evict = {
-                    @CacheEvict(key = "#fooBO.id", beforeInvocation = true),
-                    @CacheEvict(key = "#fooBO.id")
+                    @CacheEvict(key = "#fooBo.id", beforeInvocation = true),
+                    @CacheEvict(key = "#fooBo.id")
             })
-    public FooBO removeFoo(FooBO fooBO) {
-        FooPO fooPO = FooPO.builder().build();
-        BeanUtil.copy(fooBO, fooPO);
-        fooDAO.deleteFoo(fooPO);
-        return fooBO;
+    public void removeFoo(FooBo fooBo) {
+        FooPo fooPo = FooBoMapper.INSTANCE.toPo(fooBo);
+        fooDao.deleteFoo(fooPo);
     }
 }
