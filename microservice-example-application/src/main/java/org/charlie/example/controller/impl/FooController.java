@@ -7,6 +7,7 @@ import org.charlie.example.bo.entities.FooBo;
 import org.charlie.example.common.utils.bean.BeanUtil;
 import org.charlie.example.service.FooService;
 import org.charlie.example.vo.entities.FooVo;
+import org.charlie.example.vo.mappers.FooVoMapper;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Nullable;
@@ -58,22 +59,19 @@ public class FooController {
 
     @PutMapping(value = "/")
     public void createFoo(@RequestBody FooVo fooVO) {
-        FooBo fooBO = FooBo.builder().build();
-        BeanUtil.copy(fooVO, fooBO);
+        FooBo fooBO = FooVoMapper.INSTANCE.vToB(fooVO);
         fooService.createFoo(fooBO);
     }
 
     @PostMapping(value = "/")
     public void updateFoo(@RequestBody FooVo fooVO) {
-        FooBo fooBO = FooBo.builder().build();
-        BeanUtil.copy(fooVO, fooBO);
+        FooBo fooBO = FooVoMapper.INSTANCE.vToB(fooVO);
         fooService.modifyFoo(fooBO);
     }
 
     @PatchMapping(value = "/{id:\\d+}")
     public void patiallyUpdateFoo(@PathVariable int id, @RequestBody FooVo fooVO) {
-        FooBo fooBO = FooBo.builder().build();
-        BeanUtil.copy(fooVO, fooBO);
+        FooBo fooBO = FooVoMapper.INSTANCE.vToB(fooVO);
         fooBO.setId(id);
         fooService.modifyFoo(fooBO);
     }
