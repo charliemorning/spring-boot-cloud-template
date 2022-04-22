@@ -4,7 +4,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <!--  microservice-example by zhangchen  -->
-
     <parent>
         <artifactId>microservice-example</artifactId>
         <groupId>org.charlie</groupId>
@@ -13,25 +12,24 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>microservice-example-service</artifactId>
+    <artifactId>microservice-example-common</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>org.charlie</groupId>
-            <artifactId>microservice-example-dao</artifactId>
-            <version>0.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.charlie</groupId>
-            <artifactId>microservice-example-manager</artifactId>
-            <version>0.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.charlie</groupId>
-            <artifactId>microservice-example-common</artifactId>
-            <version>0.1.0</version>
-        </dependency>
-    </dependencies>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpclient.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpasyncclient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpasyncclient</artifactId>
+            <version>${httpasyncclient.version}</version>
+        </dependency>
+
+    </dependencies>
 
 </project>

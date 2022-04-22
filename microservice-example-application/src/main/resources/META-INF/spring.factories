@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=
+
+org.springframework.boot.diagnostics.FailureAnalyzer=\
+  org.charlie.example.startups.failure.HttpConnectionsConfigureFailureAnalyzer
