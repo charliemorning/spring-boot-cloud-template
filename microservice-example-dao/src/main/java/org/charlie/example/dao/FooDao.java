@@ -1,15 +1,10 @@
 package org.charlie.example.dao;
 
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import org.charlie.example.po.entities.FooPo;
-
-import java.util.List;
+import org.charlie.example.po.Foo;
 
 @Mapper
-public interface FooDao {
-    void insertFoo(FooPo fooPO);
-    void updateFoo(FooPo fooPO);
-    List<FooPo> selectFoos(FooPo fooPO);
-    void deleteFoo(FooPo fooPO);
+public interface FooDao extends BaseMapper<Foo> {
 }
