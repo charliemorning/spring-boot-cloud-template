@@ -1,6 +1,6 @@
 package org.charlie.example.vo.mappers;
 
-public interface BinaryMapper<U, L> {
+public interface BinaryConverter<U, L> {
     U fromLower(L t);
     L toLower(U t);
 }

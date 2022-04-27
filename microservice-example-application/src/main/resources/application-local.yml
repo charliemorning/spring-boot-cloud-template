@@ -27,10 +27,10 @@ spring:
         min-idle: 0
         max-idle: 8
     timeout: 500ms
-mybatis:
+mybatis-plus:
   type-aliases-package: org.charlie.example
   mapper-locations: classpath:mapper/mysql/*.xml
-  config-location: classpath:mybatis/mybatis-config.xml
+#  config-location: classpath:mybatis/mybatis-config.xml
 
 eureka:
   client:

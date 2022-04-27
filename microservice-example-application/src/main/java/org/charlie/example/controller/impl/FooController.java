@@ -1,17 +1,15 @@
 package org.charlie.example.controller.impl;
 
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import org.charlie.example.bo.entities.FooBo;
-import org.charlie.example.common.utils.bean.BeanUtil;
-import org.charlie.example.po.Foo;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.charlie.example.po.foo.Foo;
 import org.charlie.example.service.api.FooService;
-import org.charlie.example.vo.entities.FooVo;
-import org.charlie.example.vo.mappers.FooVoMapper;
+import org.charlie.example.vo.entities.PagedVo;
+import org.charlie.example.vo.entities.ResponseWrapper;
+import org.charlie.example.vo.entities.foo.FooVo;
+import org.charlie.example.vo.mappers.foo.FooVoMapper;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Nullable;
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -26,27 +24,33 @@ public class FooController {
         this.fooService = fooService;
     }
 
-
-
     @GetMapping("")
-    public List<FooVo> getFoosPagintated() {
-        List<Foo> foos = fooService.list();
-        return FooVoMapper.INSTANCE.poListToVoList(foos);
+    public ResponseWrapper<PagedVo<FooVo>> getPagedFoo(@RequestParam int index, @RequestParam int size) {
+        Page<Foo> page = new Page<>(index, size);
+        Page<Foo> foos = fooService.page(page);
+        PagedVo<FooVo> pagedFooVo = FooVoMapper.INSTANCE.toPagedVo(foos);
+        return ResponseWrapper.<PagedVo<FooVo>>builder().resultData(pagedFooVo).build();
     }
 
-    @GetMapping("/{id:\\d+}")
+    @GetMapping("/")
     public List<FooVo> getFoos(@PathVariable int id) {
         List<Foo> foos = fooService.list();
         return FooVoMapper.INSTANCE.poListToVoList(foos);
     }
 
-    @PutMapping(value = "/")
+    @GetMapping("/{id:\\d+}")
+    public ResponseWrapper<FooVo> getFoo(@PathVariable long id) {
+        Foo foo = fooService.getById(id);
+        return ResponseWrapper.<FooVo>builder().resultData(FooVoMapper.INSTANCE.poToVo(foo)).build();
+    }
+
+    @PutMapping(value = "")
     public void createFoo(@RequestBody FooVo fooVo) {
         Foo foo = FooVoMapper.INSTANCE.voToPo(fooVo);
         fooService.save(foo);
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public void updateFoo(@RequestBody FooVo fooVo) {
         Foo foo = FooVoMapper.INSTANCE.voToPo(fooVo);
         fooService.updateById(foo);

@@ -1,4 +1,4 @@
-package org.charlie.example.vo.entities;
+package org.charlie.example.vo.entities.foo;
 
 
 import lombok.AllArgsConstructor;

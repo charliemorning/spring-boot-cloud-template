@@ -3,7 +3,7 @@ package org.charlie.example.service.api;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.charlie.example.bo.entities.FooBo;
-import org.charlie.example.po.Foo;
+import org.charlie.example.po.foo.Foo;
 
 import java.util.List;
 

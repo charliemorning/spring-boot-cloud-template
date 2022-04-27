@@ -7,25 +7,17 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Data
 @Accessors(chain = true)
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PagedVo<T> {
+public class RequestWrapper<T> {
 
-    @JsonAlias("page_index")
-    int pageIndex;
+    @JsonAlias("request_time")
+    LocalDateTime requestTime;
 
-    @JsonAlias("page_size")
-    int pageSize;
-
-    int total;
-
-    @JsonAlias("record_index")
-    int recordIndex;
-
-    List<T> data;
+    T data;
 }

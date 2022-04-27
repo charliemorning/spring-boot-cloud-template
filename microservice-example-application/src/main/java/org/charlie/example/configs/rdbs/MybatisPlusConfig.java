@@ -1,4 +1,4 @@
-package org.charlie.example.configs.dbs;
+package org.charlie.example.configs.rdbs;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
@@ -24,7 +24,7 @@ import javax.sql.DataSource;
 import java.util.List;
 
 @Configuration
-@MapperScan("org.charlie.example")
+@MapperScan("org.charlie.example.dao")
 public class MybatisPlusConfig {
 
     @Bean("mybatisSqlSession")
@@ -34,12 +34,11 @@ public class MybatisPlusConfig {
         sqlSessionFactory.setDataSource(dataSource);
 //        sqlSessionFactory.setTypeEnumsPackage("com.baomidou.mybatisplus.samples.mysql.enums");
 
-        /* xml扫描 */
         sqlSessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver()
-            .getResources("classpath:mapper/mysql/*/*.xml"));
+            .getResources("classpath:mapper/mysql/*.xml"));
 
         /* 扫描 typeHandler */
-//        sqlSessionFactory.setTypeHandlersPackage("com.baomidou.mybatisplus.samples.mysql.type");
+//        sqlSessionFactory.setTypeHandlersPackage("org.charlie.example");
         MybatisConfiguration configuration = new MybatisConfiguration();
         configuration.setJdbcTypeForNull(JdbcType.NULL);
 
@@ -55,7 +54,7 @@ public class MybatisPlusConfig {
         sqlSessionFactory.setConfiguration(configuration);
 
         /* 自动填充插件 */
-        globalConfig.setMetaObjectHandler(new MysqlMetaObjectHandler());
+        globalConfig.setMetaObjectHandler(new AutoFillMetaObjectHandler());
         sqlSessionFactory.setGlobalConfig(globalConfig);
         return sqlSessionFactory.getObject();
     }

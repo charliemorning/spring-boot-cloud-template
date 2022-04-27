@@ -1,4 +1,4 @@
-package org.charlie.example.configs.dbs;
+package org.charlie.example.configs.rdbs;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
@@ -6,7 +6,7 @@ import org.apache.ibatis.reflection.MetaObject;
 import java.time.LocalDateTime;
 
 
-public class MysqlMetaObjectHandler implements MetaObjectHandler {
+public class AutoFillMetaObjectHandler implements MetaObjectHandler {
 
 
     @Override

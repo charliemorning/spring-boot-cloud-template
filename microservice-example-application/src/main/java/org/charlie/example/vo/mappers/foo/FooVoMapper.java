@@ -1,9 +1,9 @@
-package org.charlie.example.vo.mappers;
+package org.charlie.example.vo.mappers.foo;
 
 import org.charlie.example.bo.entities.FooBo;
-import org.charlie.example.po.Foo;
-import org.charlie.example.po.entities.FooPo;
-import org.charlie.example.vo.entities.FooVo;
+import org.charlie.example.po.foo.Foo;
+import org.charlie.example.vo.entities.foo.FooVo;
+import org.charlie.example.vo.mappers.TripleConverter;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

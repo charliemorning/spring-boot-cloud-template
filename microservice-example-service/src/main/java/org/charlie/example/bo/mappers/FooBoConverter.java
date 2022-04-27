@@ -2,7 +2,7 @@ package org.charlie.example.bo.mappers;
 
 
 import org.charlie.example.bo.entities.FooBo;
-import org.charlie.example.po.Foo;
+import org.charlie.example.po.foo.Foo;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

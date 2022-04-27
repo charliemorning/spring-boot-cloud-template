@@ -1,7 +1,5 @@
-package org.charlie.example.po;
+package org.charlie.example.po.bar;
 
-
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
-import org.charlie.example.dao.handlers.ForeignKeyTypeHandler;
+import org.charlie.example.po.BasePo;
 
 @Data
 @Accessors(chain = true)
@@ -17,13 +15,7 @@ import org.charlie.example.dao.handlers.ForeignKeyTypeHandler;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "foo_inf", autoResultMap = true)
-public class Foo extends BasePo {
-
-    @TableField
-    int name;
-
-    @TableField(value = "bar_id", typeHandler = ForeignKeyTypeHandler.class)
-    Bar bar;
+@TableName(value = "bar_inf", autoResultMap = true)
+public class Bar extends BasePo {
+    String name;
 }
-

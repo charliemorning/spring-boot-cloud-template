@@ -27,4 +27,7 @@ public class BasePo {
 
     @TableField(value = "update_time", fill = FieldFill.UPDATE)
     LocalDateTime updateTime;
+
+    @TableField(value = "tenant_id")
+    Long tenant;
 }
